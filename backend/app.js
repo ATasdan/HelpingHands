@@ -30,7 +30,7 @@ app.use(rateLimiter({ windowMs: 60 * 1000, max: 60 }));
 
 // routes
 app.use(express.static('./public'))
-app.use('api/docs',express.static('./apidoc'))
+app.use('/api/docs',express.static('./apidoc'))
 app.use('/api/auth',authRouter)
 
 // error handling middleware
