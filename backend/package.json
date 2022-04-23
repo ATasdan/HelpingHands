@@ -1,7 +1,7 @@
 {
   "name": "helpinghands",
   "version": "1.0.0",
-  "description": "CS492 2022 HelpingHands",
+  "description": "HelpingHands",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.51.1",
+    "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -28,5 +30,13 @@
   },
   "engines": {
     "node": "14.x"
+  },
+  "apidoc":{
+    "name": "HelpingHands API Documentation",
+    "version":"1.0.0",
+    "apidoc": {
+      "title": "HelpingHands API Documentation",
+      "url": "https://helpinghandsproject.herokuapp.com/api"
+    }
   }
 }

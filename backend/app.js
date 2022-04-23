@@ -1,5 +1,6 @@
 // basic imports
 require("dotenv").config();
+const axios = require('axios');
 require("express-async-errors");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -28,9 +29,8 @@ app.use(rateLimiter({ windowMs: 60 * 1000, max: 60 }));
 
 
 // routes
-app.get('/',(req,res) => {
-    res.send('HelpingHands test')
-})
+app.use(express.static('./public'))
+app.use('api/docs',express.static('./apidoc'))
 app.use('/api/auth',authRouter)
 
 // error handling middleware
@@ -45,9 +45,12 @@ const start = async() => {
     try {
         await mongoose.connect(process.env.MONGO_URI)
         app.listen(PORT,() => console.log(`Server is listening on port ${PORT}`))
+        func()
     } catch (error) {
         console.log(error);
     }
 }
 
 start()
+
+
