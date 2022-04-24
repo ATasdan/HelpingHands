@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const Axios = require("axios");
+import {api} from "../api/api";
 
 // const func = async () => {
 //   const response = await Axios.post(
@@ -42,26 +41,20 @@ const Login = (props) => {
   const { navigation } = props;
 
   const func = async () => {
-    const Axios = require("axios");
-
-    console.log(email);
-    console.log(password);
-    await Axios.post(
-      "https://helpinghandsproject.herokuapp.com/api/auth/login",
-      {
+    try {
+      const response = await api.post("/auth/login", {
         email: email,
         password: password,
-      }
-    )
-      .then((res) => {
-        console.log(res.data);
-
-        navigation.navigate("Home", { paramKey: email });
-      })
-      .catch((error) => {
-        alert("There was an error in logging in. Please try again!");
-        console.log(error);
       });
+
+      api.interceptors.request.use(function (config) {
+        config.headers.Authorization = `Bearer ${response.data.token}`
+      })
+      navigation.navigate("Home", { paramKey: email });
+    } catch (error) {
+      alert("There was an error in logging in. Please try again!");
+      console.log(error);
+    }
   };
 
   const validateLogin = () => {
@@ -84,8 +77,9 @@ const Login = (props) => {
         <TextInput
           style={styles.inputContainer}
           placeholder="Enter Here"
-          onChangeText={(newText) => setEmail(newText)}
+          onChangeText={(newText) => setEmail(newText.trim())}
           defaultValue={email}
+          autoCapitalize='none'
         />
         <View style={styles.divider} />
         <Text style={{ fontSize: Theme.font.medium }}>Password</Text>
@@ -95,6 +89,7 @@ const Login = (props) => {
           placeholder="Enter Here"
           onChangeText={(newText) => setPassword(newText)}
           defaultValue={password}
+          autoCapitalize='none'
         />
         <View style={styles.divider} />
         {/* <Text style={{ fontSize: Theme.font.medium }}>User Type</Text>

@@ -36,7 +36,7 @@ const {
  *      }
  *  }
 
-* @apiError (400 Bad Request) UserAlreadyRegistered email already exists.
+* @apiError (400 Bad Request) UserAlreadyRegistered email already exists
 * @apiError (400 Bad Request) NameTooShort name.length < 3
 * @apiError (400 Bad Request) InvalidEmailFormat email is not in a correct format
 * @apiError (400 Bad Request) PasswordTooShort password.length < 6
@@ -179,7 +179,7 @@ const deleteUser = async (req, res) => {
  * }
  * 
  * @apiError (400 Bad Request) UserNotFound the user was not found
- * @apiError (400 Bad Request) UserAlreadyRegistered email already exists.
+ * @apiError (400 Bad Request) UserAlreadyRegistered email already exists
  * @apiError (400 Bad Request) NameTooShort name.length < 3
  * @apiError (400 Bad Request) InvalidEmailFormat email is not in a correct format
  * @apiError (400 Bad Request) PasswordTooShort password.length < 6
@@ -187,14 +187,14 @@ const deleteUser = async (req, res) => {
  * @apiError (400 Bad Request) AddressTooShort address < 5
  * @apiError (400 Bad Request) CharactersInPhoneNumber phoneNumber contains non-number characters
  * 
- * @apiErrorExample Error-Response:
+ * @apiErrorExample 400-Error-Response:
  * HTTP/1.1 400 Bad Request{
  *  "msg": "Email must be valid"
  * }
  * 
  * @apiError (401 Unauthorized) InvalidToken Invalid or no token sent
  * 
- * @apiErrorExample Error-Response:
+ * @apiErrorExample 401-Error-Response:
  * HTTP/1.1 401 Unauthorized{
  *  "msg": "Bad Token"
  * }

@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import Theme from "../styles/theme";
 import { Picker } from "@react-native-picker/picker";
+import { api } from "../api/api";
 
 const Register = (props) => {
   const { navigation } = props;
@@ -24,27 +25,27 @@ const Register = (props) => {
   const [password, setPassword] = useState("");
 
   const func = async () => {
-    const Axios = require("axios");
-
-    await Axios.post(
-      "https://helpinghandsproject.herokuapp.com/api/auth/register",
-      {
+    try {
+      const response = await api.post("/auth/register", {
         name: username,
         email: email,
         password: password,
         bloodType: bloodtype,
         phoneNumber: phonenumber,
         address: address,
-      }
-    )
-      .then((res) => {
-        console.log(res.data);
-        alert("You have successfully registered your account!");
-      })
-      .catch((error) => {
-        alert("There was an error in the registration. Please try again!");
-        console.log(error);
       });
+
+      alert("You have successfully registered your account!");
+      
+      api.interceptors.request.use(function (config) {
+        config.headers.Authorization = `Bearer ${response.data.token}`
+      })
+      
+      navigation.navigate("Home", { paramKey: email });
+    } catch (error) {
+      alert("There was an error in the registration. Please try again!");
+      console.log(error);
+    }
   };
 
   const validateRegistration = () => {
@@ -94,6 +95,7 @@ const Register = (props) => {
             placeholder="Enter Here"
             onChangeText={(newText) => setEmail(newText)}
             defaultValue={email}
+            autoCapitalize='none'
           />
 
           <View style={styles.divider} />
@@ -126,6 +128,7 @@ const Register = (props) => {
             placeholder="Enter Here"
             onChangeText={(newText) => setPassword(newText)}
             defaultValue={password}
+            autoCapitalize='none'
           />
 
           <View style={styles.divider} />
