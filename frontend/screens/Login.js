@@ -7,13 +7,14 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
   ScrollView,
 } from "react-native";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {api} from "../api/api";
+import { api,changeToken } from "../api/api";
 
-// const func = async () => {
+// const apiCall = async () => {
 //   const response = await Axios.post(
 //     "https://helpinghandsproject.herokuapp.com/api/auth/register",
 //     {
@@ -32,26 +33,32 @@ import Theme from "../styles/theme";
 
 const logo = "https://cdn-icons-png.flaticon.com/512/205/205916.png";
 import { Picker } from "@react-native-picker/picker";
+import LoadingAnim from "../components/LoadingAnim";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
 
-  const { navigation } = props;
+  const [loading, setLoading] = useState(false);
 
-  const func = async () => {
+  
+  const { navigation } = props;
+  const apiCall = async () => {
     try {
+      setLoading(true);
       const response = await api.post("/auth/login", {
         email: email,
         password: password,
       });
+      setLoading(false);
 
-      api.interceptors.request.use(function (config) {
-        config.headers.Authorization = `Bearer ${response.data.token}`
-      })
+      // This is only for register and login
+      changeToken(response.data.token)
+
       navigation.navigate("Home", { paramKey: email });
     } catch (error) {
+      setLoading(false)
       alert("There was an error in logging in. Please try again!");
       console.log(error);
     }
@@ -61,12 +68,14 @@ const Login = (props) => {
     if (email.length == 0 || password.length == 0) {
       alert("Please insert all required fields!");
     } else {
-      func();
+      apiCall();
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Below is a spinner to indicate loading */}
+      <LoadingAnim isLoading={loading}></LoadingAnim>
       <View style={styles.logoContainer}>
         <Image source={{ uri: logo }} style={styles.img}></Image>
         <Text style={styles.text}>Helping Hands</Text>
@@ -79,7 +88,7 @@ const Login = (props) => {
           placeholder="Enter Here"
           onChangeText={(newText) => setEmail(newText.trim())}
           defaultValue={email}
-          autoCapitalize='none'
+          autoCapitalize="none"
         />
         <View style={styles.divider} />
         <Text style={{ fontSize: Theme.font.medium }}>Password</Text>
@@ -89,7 +98,7 @@ const Login = (props) => {
           placeholder="Enter Here"
           onChangeText={(newText) => setPassword(newText)}
           defaultValue={password}
-          autoCapitalize='none'
+          autoCapitalize="none"
         />
         <View style={styles.divider} />
         {/* <Text style={{ fontSize: Theme.font.medium }}>User Type</Text>

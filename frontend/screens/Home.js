@@ -51,6 +51,12 @@ const Home = (props) => {
             navTo="AskBloodOne"
           />
           <MenuItem
+            iconName="list"
+            itemName="See Nearby Requests"
+            navTo="NearbyRequests"
+          >
+          </MenuItem>
+          <MenuItem
             iconName="map-marked"
             itemName="Check on Map"
             navTo="CheckMap"
