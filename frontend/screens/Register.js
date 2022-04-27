@@ -26,7 +26,7 @@ const Register = (props) => {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(false) // for spinner
 
   const apiCall = async () => {
     try {

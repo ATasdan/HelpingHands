@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const BloodRequestSchema = new mongoose.Schema(
   {
-    donorID: String,
     receiverID: {
       type: String,
       required: [
@@ -18,6 +17,8 @@ const BloodRequestSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    bloodType: String,
+    hospital: String,
   },
   { timestamps: true }
 );
