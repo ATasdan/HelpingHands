@@ -126,6 +126,8 @@ const getPledges = async (req, res) => {
       hospital: Request.hospital,
       bloodType: Request.bloodType,
       requestID: Request._id,
+      creationDate: element.createdAt,
+      distance: '20km' // TODO: FIX THIS
     }
     pledgeData.push(responseData)
   }
