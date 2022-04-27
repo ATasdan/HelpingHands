@@ -138,9 +138,6 @@ const getPledges = async (req, res) => {
 
 const deletePledge = async(req,res) => {
   const Pledge = await RequestPledgeModel.findOneAndDelete({donorID:req.userID,requestID:req.body.requestID})
-  if(!Pledge){
-    throw new BadRequestError('Pledge could not be deleted')
-  }
   res.status(StatusCodes.OK).json({data:Pledge})
 }
 
