@@ -61,6 +61,8 @@ const getNearbyRequests = async (req, res) => {
       hospital: element.hospital,
       bloodType: element.bloodType,
       requestID: element._id,
+      creationDate: element.createdAt,
+      distance: '20km' // TODO: FIX THIS
     });
   }
   res.status(StatusCodes.OK).json({ data: responseData });

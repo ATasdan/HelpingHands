@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity,Button } from "react-native";
 import React from "react";
 import theme from "../styles/theme";
-
+ 
 export default function RequestEl({ data, onPress, pledged }) {
   return (
     <TouchableOpacity
@@ -14,7 +14,7 @@ export default function RequestEl({ data, onPress, pledged }) {
       <Text>Contact: {data.receiver.name}</Text>
       <Text>Distance: {data.distance}</Text>
       <Text>
-        Creation Date: {data.creationDate.toLocaleDateString("en-GB")}
+        Creation Date: {data.creationDate.split('T')[0]}
       </Text>
     </TouchableOpacity>
   );

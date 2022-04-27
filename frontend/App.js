@@ -27,7 +27,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NearbyRequests">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           options={{ headerShown: false }}
           name="Login"

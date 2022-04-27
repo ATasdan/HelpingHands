@@ -8,39 +8,53 @@ import {
   ScrollView,
   LogBox,
   Alert,
-  Button
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import RequestEl from "../components/RequestEl";
 import CheckBox from "react-native-check-box";
-import {api} from '../api/api'
+import { api } from "../api/api";
+import LoadingAnim from "../components/LoadingAnim";
 
 export default function NearbyRequests() {
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
-  useEffect(async () => {
+
+  const getData = async () => {
     try {
-      const requestData = await api.get('/nearbyRequests')
-      const pledgeData = await api.get('/pledge')
-      setPledges(pledgeData)
-      setRequests(requestData)  
+      setLoading(true);
+      const requestData = await api.get("/bloodRequest/nearbyRequests");
+      const pledgeData = await api.get("/bloodRequest/pledge");
+      setLoading(false);
+      setPledges(pledgeData.data.data);
+      setRequests(requestData.data.data);
+      console.log(pledges);
+      console.log(requests);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
-  })
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedItem, setSelectedItem] = useState(-1);
-  const [pledges,setPledges] = useState({})
-  const [requests,setRequests] = useState({})
-  
+  const [pledges, setPledges] = useState({});
+  const [requests, setRequests] = useState({});
 
   const showBox = (key) => {
     Alert.alert(
       "Do you want to pledge to donate blood to this request?",
-      `Request:${data[key].bloodType} blood requested at ${data[key].hospital}\nContact: ${data[key].receiver.name}\nDistance:${data[key].distance}\nCreation Date:${data[key].creationDate.toLocaleDateString()}`,
-      [{text:'Yes'},{text:'Cancel'}]
+      `Request:${data[key].bloodType} blood requested at ${
+        data[key].hospital
+      }\nContact: ${data[key].receiver.name}\nDistance:${
+        data[key].distance
+      }\nCreation Date:${data[key].creationDate.toLocaleDateString()}`,
+      [{ text: "Yes" }, { text: "Cancel" }]
     );
   };
 
@@ -55,6 +69,7 @@ export default function NearbyRequests() {
           ></RefreshControl>
         }
       >
+        <LoadingAnim isLoading={loading}></LoadingAnim>
         <Text style={[styles.title, { alignSelf: "center" }]}>
           Blood Requests Near Your Location
         </Text>
@@ -71,14 +86,26 @@ export default function NearbyRequests() {
 
         <FlatList
           data={pledges}
-          renderItem={({ item }) => <RequestEl pledged={true} data={item} onPress={() => showBox(item.key)} />}
+          renderItem={({ item }) => (
+            <RequestEl
+              pledged={true}
+              data={item}
+              onPress={() => showBox(item.key)}
+            />
+          )}
           keyExtractor={(item) => item.key}
         />
         <Text style={styles.title}>Nearby Requests</Text>
         <View style={styles.hr}></View>
         <FlatList
-          data={pledges}
-          renderItem={({ item }) => <RequestEl pledged={false} data={item} onPress={() => showBox(item.key)}/>}
+          data={requests}
+          renderItem={({ item }) => (
+            <RequestEl
+              pledged={false}
+              data={item}
+              onPress={() => showBox(item.key)}
+            />
+          )}
           keyExtractor={(item) => item.key}
         />
       </ScrollView>
