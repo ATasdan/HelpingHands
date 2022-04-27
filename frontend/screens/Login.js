@@ -57,7 +57,7 @@ const Login = (props) => {
       // This is only for register and login
       changeToken(response.data.token)
 
-      navigation.navigate("Home", { paramKey: email });
+      navigation.navigate("Home", { paramKey: email,bloodType:response.data.data.bloodType });
     } catch (error) {
       setLoading(false)
       alert("There was an error in logging in. Please try again!");

@@ -54,6 +54,7 @@ const Home = (props) => {
             iconName="list"
             itemName="See Nearby Requests"
             navTo="NearbyRequests"
+            paramKey={props.route.params.bloodType}
           >
           </MenuItem>
           <MenuItem

@@ -15,7 +15,7 @@ import CheckBox from "react-native-check-box";
 import { api } from "../api/api";
 import LoadingAnim from "../components/LoadingAnim";
 
-export default function NearbyRequests() {
+export default function NearbyRequests(props) {
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
@@ -23,15 +23,31 @@ export default function NearbyRequests() {
   const getData = async () => {
     try {
       setLoading(true);
-      const requestData = await api.get("/bloodRequest/nearbyRequests");
+      let requestData = await api.get("/bloodRequest/nearbyRequests");
       const pledgeData = await api.get("/bloodRequest/pledge");
       setLoading(false);
+      let i = 0;
+      const { paramKey } = props.route.params;
+      if (!checked) {
+        requestData.data.data = requestData.data.data.filter(
+          element => (element.bloodType === paramKey)
+        );
+      }
+      for (const element of pledgeData.data.data) {
+        element.key = i;
+        i++;
+      }
+      i = 0;
+      for (const element of requestData.data.data) {
+        element.key = i;
+        i++;
+      }
       setPledges(pledgeData.data.data);
       setRequests(requestData.data.data);
-      console.log(pledges);
-      console.log(requests);
+      setRefreshing(false);
     } catch (error) {
       setLoading(false);
+      setRefreshing(false);
       console.log(error);
     }
   };
@@ -42,20 +58,54 @@ export default function NearbyRequests() {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(-1);
   const [pledges, setPledges] = useState({});
   const [requests, setRequests] = useState({});
 
   const showBox = (key) => {
     Alert.alert(
       "Do you want to pledge to donate blood to this request?",
-      `Request:${data[key].bloodType} blood requested at ${
-        data[key].hospital
-      }\nContact: ${data[key].receiver.name}\nDistance:${
-        data[key].distance
-      }\nCreation Date:${data[key].creationDate.toLocaleDateString()}`,
-      [{ text: "Yes" }, { text: "Cancel" }]
+      `Request: ${requests[key].bloodType} blood requested at ${
+        requests[key].hospital
+      }\nContact: ${requests[key].receiver.name}\nDistance:${
+        requests[key].distance
+      }\nCreation Date: ${requests[key].creationDate.split("T")[0]}`,
+      [{ text: "Yes", onPress: () => pledge(key) }, { text: "Cancel" }]
     );
+  };
+
+  const showInfo = (key) => {
+    Alert.alert(
+      "Contact information",
+      `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}`
+    );
+  };
+
+  const pledge = async (key) => {
+    try {
+      setLoading(true);
+      const response = await api.post("/bloodRequest/pledge", {
+        requestID: requests[key].requestID,
+      });
+      getData();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const unPledge = async (key) => {
+    try {
+      setLoading(true);
+      const response = await api.delete("/bloodRequest/pledge", {
+        data: {
+          requestID: pledges[key].requestID,
+        },
+      });
+      getData();
+    } catch (error) {
+      setLoading(false);
+      console.log(error.response.data);
+    }
   };
 
   return (
@@ -65,7 +115,7 @@ export default function NearbyRequests() {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => setRefreshing(true)}
+            onRefresh={() => getData()}
           ></RefreshControl>
         }
       >
@@ -90,7 +140,8 @@ export default function NearbyRequests() {
             <RequestEl
               pledged={true}
               data={item}
-              onPress={() => showBox(item.key)}
+              onCancel={() => unPledge(item.key)}
+              onPress={() => showInfo(item.key)}
             />
           )}
           keyExtractor={(item) => item.key}
