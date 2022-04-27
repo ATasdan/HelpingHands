@@ -18,7 +18,7 @@ const createRequest = async (req, res) => {
     donorID: "",
     receiverID: req.userID,
     location: req.body.latitude.concat(",").concat(req.body.longtitude),
-    bloodType: Receiver.bloodType,
+    bloodType: req.body.bloodType,
     hospital: req.body.hospital,
   };
   const BloodRequest = await BloodRequestModel.create(requestData);
@@ -136,9 +136,18 @@ const getPledges = async (req, res) => {
   res.status(StatusCodes.OK).json({ data: pledgeData });
 };
 
+const deletePledge = async(req,res) => {
+  const Pledge = await RequestPledgeModel.findOneAndDelete({donorID:req.userID,requestID:req.body.requestID})
+  if(!Pledge){
+    throw new BadRequestError('Pledge could not be deleted')
+  }
+  res.status(StatusCodes.OK).json({data:Pledge})
+}
+
 module.exports = {
   createRequest,
   pledgeToRequest,
   getNearbyRequests,
   getPledges,
+  deletePledge
 };
