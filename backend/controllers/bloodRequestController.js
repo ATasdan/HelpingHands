@@ -46,7 +46,7 @@ const getNearbyRequests = async (req, res) => {
   const Pledges = await RequestPledgeModel.find({donorID:req.userID})
   const responseData = [];
   for(const element of AllRequests){
-    if(element.receiverID === req.userID || await RequestPledgeModel.find({donorID:req.userID,requestID: element._id})){
+    if(element.receiverID === req.userID || await RequestPledgeModel.findOne({donorID:req.userID,requestID: element._id})){
       continue
     }
     const Receiver = await UserModel.findById(element.receiverID)
