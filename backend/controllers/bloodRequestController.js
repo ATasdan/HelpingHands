@@ -137,7 +137,12 @@ const getPledges = async (req, res) => {
 };
 
 const deletePledge = async(req,res) => {
+  console.log(req.userID);
+  console.log(req.body.requestID);
   const Pledge = await RequestPledgeModel.findOneAndDelete({donorID:req.userID,requestID:req.body.requestID})
+  if(!Pledge){
+    throw new BadRequestError('Pledge not found')
+  }
   res.status(StatusCodes.OK).json({data:Pledge})
 }
 
