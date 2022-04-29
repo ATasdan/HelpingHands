@@ -22,7 +22,7 @@ const guy = "https://randomuser.me/api/portraits/men/42.jpg";
 
 const Home = (props) => {
   const { navigation } = props;
-  const { paramKey,bloodType } = props.route.params;
+  const { paramKey, bloodType } = props.route.params;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -52,7 +52,7 @@ const Home = (props) => {
           />
           <MenuItem
             iconName="map-marked"
-            itemName="Check on Map"
+            itemName="See Nearby Requests"
             navTo="NearbyRequests"
             paramKey={bloodType}
           />

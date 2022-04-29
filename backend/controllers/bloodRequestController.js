@@ -17,9 +17,11 @@ const createRequest = async (req, res) => {
   const requestData = {
     donorID: "",
     receiverID: req.userID,
-    location: req.body.latitude.concat(",").concat(req.body.longtitude),
+    latitude: req.body.latitude,
+    longtitude: req.body.longtitude,
     bloodType: req.body.bloodType,
     hospital: req.body.hospital,
+    expDate: req.body.expDate
   };
   const BloodRequest = await BloodRequestModel.create(requestData);
   const responseData = {
@@ -29,10 +31,12 @@ const createRequest = async (req, res) => {
       phoneNumber: Receiver.phoneNumber,
       receiverID: req.userID,
     },
-    location: requestData.location,
+    latitude: requestData.latitude,
+    longtitude: requestData.latitude,
     hospital: requestData.hospital,
     bloodType: requestData.bloodType,
     requestID: BloodRequest._id,
+    expDate: requestData.expDate
   };
   res.status(StatusCodes.OK).json({ data: responseData });
 };
