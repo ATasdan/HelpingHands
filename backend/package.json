@@ -1,0 +1,42 @@
+{
+  "name": "helpinghands",
+  "version": "1.0.0",
+  "description": "HelpingHands",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apidoc": "^0.51.1",
+    "axios": "^0.26.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^6.3.0",
+    "helmet": "^5.0.2",
+    "http-status-codes": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.0",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "apidoc":{
+    "name": "HelpingHands API Documentation",
+    "version":"1.0.0",
+    "apidoc": {
+      "title": "HelpingHands API Documentation",
+      "url": "https://helpinghandsproject.herokuapp.com/api"
+    }
+  },
+  "engines": {
+    "node": "14.x"
+  }
+}

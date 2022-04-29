@@ -14,6 +14,9 @@ import { useState } from "react";
 import Theme from "../styles/theme";
 import { Picker } from "@react-native-picker/picker";
 
+import { api, changeToken } from "../api/api";
+import LoadingAnim from "../components/LoadingAnim";
+
 const Register = (props) => {
   const { navigation } = props;
   const [username, setUsername] = useState("");
@@ -23,28 +26,32 @@ const Register = (props) => {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
 
-  const func = async () => {
-    const Axios = require("axios");
+  const [loading,setLoading] = useState(false) // for spinner
 
-    await Axios.post(
-      "https://helpinghandsproject.herokuapp.com/api/auth/register",
-      {
+  const apiCall = async () => {
+    try {
+      setLoading(true)
+      const response = await api.post("/auth/register", {
         name: username,
         email: email,
         password: password,
         bloodType: bloodtype,
         phoneNumber: phonenumber,
         address: address,
-      }
-    )
-      .then((res) => {
-        console.log(res.data);
-        alert("You have successfully registered your account!");
-      })
-      .catch((error) => {
-        alert("There was an error in the registration. Please try again!");
-        console.log(error);
       });
+      setLoading(false)
+
+      alert("You have successfully registered your account!");
+
+      // This is only for register and login
+      changeToken(response.data.token)
+
+      navigation.navigate("Home", { paramKey: email, bloodType:response.data.data.bloodType });
+    } catch (error) {
+      setLoading(false)
+      alert("There was an error in the registration. Please try again!");
+      console.log(error);
+    }
   };
 
   const validateRegistration = () => {
@@ -58,11 +65,12 @@ const Register = (props) => {
     ) {
       alert("Please insert all required fields!");
     } else {
-      func();
+      apiCall();
     }
   };
   return (
     <SafeAreaView style={styles.container}>
+      <LoadingAnim isLoading={loading}></LoadingAnim>
       <View style={styles.logoContainer}>
         <Text style={styles.text}>Helping Hands</Text>
       </View>
@@ -94,6 +102,7 @@ const Register = (props) => {
             placeholder="Enter Here"
             onChangeText={(newText) => setEmail(newText)}
             defaultValue={email}
+            autoCapitalize="none"
           />
 
           <View style={styles.divider} />
@@ -126,6 +135,7 @@ const Register = (props) => {
             placeholder="Enter Here"
             onChangeText={(newText) => setPassword(newText)}
             defaultValue={password}
+            autoCapitalize="none"
           />
 
           <View style={styles.divider} />
