@@ -9,7 +9,11 @@ const BloodRequestSchema = new mongoose.Schema(
         "Check your token, this user does not exist on the database",
       ],
     },
-    location: {
+    latitude: {
+      type: String,
+      required: [true, "Invalid location data provided"],
+    },
+    longtitude: {
       type: String,
       required: [true, "Invalid location data provided"],
     },
@@ -19,6 +23,8 @@ const BloodRequestSchema = new mongoose.Schema(
     },
     bloodType: String,
     hospital: String,
+    units: Number,
+    expDate: String
   },
   { timestamps: true }
 );
