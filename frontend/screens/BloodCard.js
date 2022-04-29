@@ -11,7 +11,7 @@ import {
 
 import Theme from '../styles/theme'
 
-const bloodbg = require('./images/bloodcard.png')
+const bloodbg = require('../images/bloodcard.png')
 
 
 const DATA = [

@@ -34,7 +34,7 @@ const DATA = [
         date: '4-2-2020',
         desc:'You received 2 uits of blood type A+ from Yellow Hospital',
         dono:false
-    },
+      },
   ];
 
 

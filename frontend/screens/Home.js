@@ -30,7 +30,7 @@ const Home = (props) => {
           <Image source={{ uri: guy }} style={styles.img} />
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={styles.mainHead}>Welcome</Text>
-            <Text style={styles.subHead}>{JSON.stringify(paramKey)}</Text>
+            <Text style={styles.subHead}>{paramKey}</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("Login")}
               style={{ marginTop: 5 }}
@@ -50,13 +50,6 @@ const Home = (props) => {
             itemName="Ask for Blood"
             navTo="AskBloodOne"
           />
-          <MenuItem
-            iconName="list"
-            itemName="See Nearby Requests"
-            navTo="NearbyRequests"
-            paramKey={props.route.params.bloodType}
-          >
-          </MenuItem>
           <MenuItem
             iconName="map-marked"
             itemName="Check on Map"
