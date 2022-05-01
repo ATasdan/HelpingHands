@@ -10,7 +10,12 @@ const RequestPledgeSchema = new mongoose.Schema(
             type: String,
             required: [true,'Request ID must be provided']
         },
-    }
+        fulfilled: {
+            type: Boolean,
+            default: false
+        },
+        fulfillmentDate: String
+    },{timeseries:true}
 )
 
 module.exports = mongoose.model('RequestPledge',RequestPledgeSchema)
