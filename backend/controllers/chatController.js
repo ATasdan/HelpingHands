@@ -21,15 +21,16 @@ const getAllMessages = async (req, res) => {
     sentMessages: SentMessages,
     receivedMessages: ReceivedMessages,
   };
-  req.status(StatusCodes.OK).json({ data: responseData });
+  res.status(StatusCodes.OK).json({ data: responseData });
 };
 
-const sendMessage = async (req, req) => {
+const sendMessage = async (req, res) => {
   const Message = await ChatModel.create({
     senderID: req.userID,
     receiverID: req.body.targetID,
     message: req.body.message,
   });
+  res.status(StatusCodes.CREATED).json({data: Message})
 };
 
-module.exports = {getAllMessages,responseData}
+module.exports = {getAllMessages,sendMessage}
