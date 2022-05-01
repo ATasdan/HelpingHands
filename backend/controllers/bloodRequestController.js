@@ -22,7 +22,7 @@ const createRequest = async (req, res) => {
     bloodType: req.body.bloodType,
     hospital: req.body.hospital,
     expDate: req.body.expDate,
-    units: req.body.units
+    units: req.body.units,
   };
   const BloodRequest = await BloodRequestModel.create(requestData);
   const responseData = {
@@ -38,7 +38,7 @@ const createRequest = async (req, res) => {
     bloodType: requestData.bloodType,
     requestID: BloodRequest._id,
     expDate: requestData.expDate,
-    units: requestData.units
+    units: requestData.units,
   };
   res.status(StatusCodes.OK).json({ data: responseData });
 };
@@ -49,13 +49,19 @@ const getNearbyRequests = async (req, res) => {
   if (!AllRequests) {
     throw new BadRequestError("No nearby blood requests found");
   }
-  const Pledges = await RequestPledgeModel.find({donorID:req.userID})
+  const Pledges = await RequestPledgeModel.find({ donorID: req.userID });
   const responseData = [];
-  for(const element of AllRequests){
-    if(element.receiverID === req.userID || await RequestPledgeModel.findOne({donorID:req.userID,requestID: element._id})){
-      continue
+  for (const element of AllRequests) {
+    if (
+      element.receiverID === req.userID ||
+      (await RequestPledgeModel.findOne({
+        donorID: req.userID,
+        requestID: element._id,
+      }))
+    ) {
+      continue;
     }
-    const Receiver = await UserModel.findById(element.receiverID)
+    const Receiver = await UserModel.findById(element.receiverID);
     const receiverData = {
       name: Receiver.name,
       email: Receiver.email,
@@ -71,7 +77,7 @@ const getNearbyRequests = async (req, res) => {
       creationDate: element.createdAt,
       expirationDate: element.expDate,
       units: element.units,
-      distance: '20km' // TODO: FIX THIS
+      distance: "20km", // TODO: FIX THIS
     });
   }
   res.status(StatusCodes.OK).json({ data: responseData });
@@ -90,8 +96,8 @@ const pledgeToRequest = async (req, res) => {
   if (!Receiver) {
     throw new BadRequestError("Could not find receiver");
   }
-  if(Donor._id === Receiver._id){
-    throw new BadRequestError('Cannot pledge to self!');
+  if (Donor._id === Receiver._id) {
+    throw new BadRequestError("Cannot pledge to self!");
   }
   const Pledge = await RequestPledgeModel.create({
     donorID: Donor._id,
@@ -119,16 +125,16 @@ const getPledges = async (req, res) => {
   if (Pledges === []) {
     throw new BadRequestError("No pledges found");
   }
-  const pledgeData = []
-  for(const element of Pledges){
-    const Request = await BloodRequestModel.findById(element.requestID)
-    const Receiver = await UserModel.findById(Request.receiverID)
+  const pledgeData = [];
+  for (const element of Pledges) {
+    const Request = await BloodRequestModel.findById(element.requestID);
+    const Receiver = await UserModel.findById(Request.receiverID);
     const receiverData = {
-      name:Receiver.name,
-      email:Receiver.email,
-      phoneNumber:Receiver.phoneNumber,
-      bloodType:Receiver.bloodType
-    }
+      name: Receiver.name,
+      email: Receiver.email,
+      phoneNumber: Receiver.phoneNumber,
+      bloodType: Receiver.bloodType,
+    };
     const responseData = {
       receiver: receiverData,
       location: Request.location,
@@ -138,55 +144,60 @@ const getPledges = async (req, res) => {
       creationDate: Request.createdAt,
       expirationDate: Request.expDate,
       units: Request.units,
-      distance: '20km' // TODO: FIX THIS
-    }
-    pledgeData.push(responseData)
+      distance: "20km", // TODO: FIX THIS
+    };
+    pledgeData.push(responseData);
   }
-  
+
   res.status(StatusCodes.OK).json({ data: pledgeData });
 };
 
-const deletePledge = async(req,res) => {
-  const Pledge = await RequestPledgeModel.findOneAndDelete({donorID:req.userID,requestID:req.body.requestID})
-  if(!Pledge){
-    throw new BadRequestError('Pledge not found')
+const deletePledge = async (req, res) => {
+  const Pledge = await RequestPledgeModel.findOneAndDelete({
+    donorID: req.userID,
+    requestID: req.body.requestID,
+  });
+  if (!Pledge) {
+    throw new BadRequestError("Pledge not found");
   }
-  res.status(StatusCodes.OK).json({data:Pledge})
-}
+  res.status(StatusCodes.OK).json({ data: Pledge });
+};
 
-const getYourRequests = async(req,res) => {
-  const Requests = await BloodRequestModel.find({receiverID:req.userID})
-  const requestData = []
-  const pledgeData = []
-  for(Request of Requests){
-    const Pledges = await RequestPledgeModel.find({requestID:Request._id})
-    if(!Pledges){
-      continue
+const getYourRequests = async (req, res) => {
+  const Requests = await BloodRequestModel.find({ receiverID: req.userID });
+  const requestData = [];
+  const pledgeData = [];
+  for (Request of Requests) {
+    const Pledges = await RequestPledgeModel.find({ requestID: Request._id });
+    if (!Pledges) {
+      continue;
     }
     requestData.push({
-      hospital:Request.hospital,
-      bloodType:Request.bloodType,
+      hospital: Request.hospital,
+      bloodType: Request.bloodType,
       creationDate: Request.createdAt,
       units: Request.units,
       expirationDate: Request.expDate,
       requestID: Request._id,
-      units: Request.units
-    })
-    for(Pledge of Pledges){
-      const Donor = await UserModel.findById(Pledge.donorID)
+      units: Request.units,
+    });
+    for (Pledge of Pledges) {
+      const Donor = await UserModel.findById(Pledge.donorID);
       pledgeData.push({
         requestID: Pledge.requestID,
-        donorData:{
+        donorData: {
           name: Donor.name,
           email: Donor.email,
-          phoneNumber: Donor.phoneNumber
-        }
-      })
+          phoneNumber: Donor.phoneNumber,
+        },
+      });
     }
   }
 
-  res.status(StatusCodes.OK).json({data:{requests:requestData,pledges:pledgeData}})
-}
+  res
+    .status(StatusCodes.OK)
+    .json({ data: { requests: requestData, pledges: pledgeData } });
+};
 
 module.exports = {
   createRequest,
@@ -194,5 +205,5 @@ module.exports = {
   getNearbyRequests,
   getPledges,
   deletePledge,
-  getYourRequests
+  getYourRequests,
 };

@@ -1,7 +1,7 @@
 // basic imports
 require("dotenv").config();
-const axios = require("axios");
 require("express-async-errors");
+const axios = require("axios");
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
@@ -15,6 +15,7 @@ const rateLimiter = require("express-rate-limit");
 // router imports
 const authRouter = require("./routes/authRouter");
 const bloodRequestRouter = require("./routes/bloodRequestRouter");
+const chatRouter = require("./routes/chatRouter");
 
 // middleware imports
 const notFoundMiddleware = require("./middleware/not-found");
@@ -32,6 +33,7 @@ app.use(rateLimiter({ windowMs: 60 * 1000, max: 60 }));
 app.use(express.static("./public"));
 app.use("/api/auth", authRouter);
 app.use("/api/bloodRequest", authenticationMiddleware, bloodRequestRouter);
+app.use("/api/chat", authenticationMiddleware, chatRouter);
 
 // error handling middleware
 app.use(notFoundMiddleware);

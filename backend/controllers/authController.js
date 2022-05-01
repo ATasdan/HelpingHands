@@ -128,19 +128,18 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ token: token, data: userData });
 };
 
-
 /**
  * @api {delete} /auth/modify  Delete User
  * @apiName Delete User
- * @apiGroup User 
- * 
+ * @apiGroup User
+ *
  * @apiHeader {String} Authorization Bearer token must be sent
- * 
+ *
  * @apiSuccess (200 OK) - -
- * 
+ *
  * @apiError (400 Bad Request) UserNotFound realistically should not happen
  * @apiError (401 Unauthorized) InvalidToken Invalid or no token sent
- * 
+ *
  * */
 const deleteUser = async (req, res) => {
   const payload = validateJWT(req);
@@ -154,19 +153,19 @@ const deleteUser = async (req, res) => {
 /**
  *  @api {patch} /auth/modify  Update User
  * @apiName Update User
- * @apiGroup User 
- * 
+ * @apiGroup User
+ *
  * @apiHeader {String} Authorization Bearer token must be sent
- * 
+ *
  * @apiParam {String} email
  * @apiParam {String} name
  * @apiParam {String} password
  * @apiParam {String} bloodType
  * @apiParam {String} phoneNumber
  * @apiParam {String} address
- * 
+ *
  * @apiSuccess (200 OK) {Object} data{email,name,password,bloodType,phoneNumber,address}
- * 
+ *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK {
  *  "data": {
@@ -177,7 +176,7 @@ const deleteUser = async (req, res) => {
  *       "address": "addresstest"
  *   }
  * }
- * 
+ *
  * @apiError (400 Bad Request) UserNotFound the user was not found
  * @apiError (400 Bad Request) UserAlreadyRegistered email already exists
  * @apiError (400 Bad Request) NameTooShort name.length < 3
@@ -186,19 +185,19 @@ const deleteUser = async (req, res) => {
  * @apiError (400 Bad Request) InvalidBloodType bloodType != "0+,0-,A+,A-,B+,B-,AB+,AB-"
  * @apiError (400 Bad Request) AddressTooShort address < 5
  * @apiError (400 Bad Request) CharactersInPhoneNumber phoneNumber contains non-number characters
- * 
+ *
  * @apiErrorExample 400-Error-Response:
  * HTTP/1.1 400 Bad Request{
  *  "msg": "Email must be valid"
  * }
- * 
+ *
  * @apiError (401 Unauthorized) InvalidToken Invalid or no token sent
- * 
+ *
  * @apiErrorExample 401-Error-Response:
  * HTTP/1.1 401 Unauthorized{
  *  "msg": "Bad Token"
  * }
- * 
+ *
  */
 const updateUser = async (req, res) => {
   const payload = validateJWT(req);
