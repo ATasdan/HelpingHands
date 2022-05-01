@@ -52,7 +52,7 @@ const Home = (props) => {
           />
           <MenuItem
             iconName="list"
-            itemName="Your Requests"
+            itemName="My Requests"
             navTo="YourRequests"
           />
           <MenuItem
