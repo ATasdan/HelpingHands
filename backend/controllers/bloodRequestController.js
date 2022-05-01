@@ -156,6 +156,9 @@ const getYourRequests = async(req,res) => {
   const pledgeData = []
   for(Request of Requests){
     const Pledges = await RequestPledgeModel.find({requestID:Request._id})
+    if(!Pledges){
+      continue
+    }
     requestData.push({
       hospital:Request.hospital,
       bloodType:Request.bloodType,
@@ -164,10 +167,10 @@ const getYourRequests = async(req,res) => {
       expirationDate: Request.expDate,
       requestID: Request._id
     })
-    for(pledge of Pledges){
-      const Donor = UserModel.findById(pledge.donorID)
+    for(Pledge of Pledges){
+      const Donor = await UserModel.findById(Pledge.donorID)
       pledgeData.push({
-        requestID: Pledge._id,
+        requestID: Pledge.requestID,
         donorData:{
           name: Donor.name,
           email: Donor.email,
