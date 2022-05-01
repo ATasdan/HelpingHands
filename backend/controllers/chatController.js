@@ -1,5 +1,5 @@
 const UserModel = require("../models/UserModel");
-const ChatModel = require("../controllers/chatController");
+const ChatModel = require("../models/ChatModel");
 const { StatusCodes } = require("http-status-codes");
 const {
   BadRequestError,
