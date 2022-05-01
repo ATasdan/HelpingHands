@@ -68,7 +68,9 @@ export default function NearbyRequests(props) {
         requests[key].hospital
       }\nContact: ${requests[key].receiver.name}\nDistance:${
         requests[key].distance
-      }\nCreation Date: ${requests[key].creationDate.split("T")[0]}\nExpiration Date:${requests[key].expirationDate}`,
+      }\nCreation Date: ${
+        requests[key].creationDate.split("T")[0]
+      }\nExpiration Date:${requests[key].expirationDate}`,
       [{ text: "Yes", onPress: () => pledge(key) }, { text: "Cancel" }]
     );
   };
@@ -130,35 +132,40 @@ export default function NearbyRequests(props) {
           onClick={() => setChecked(!checked)}
           rightTextView={<Text>See Requests that are not your blood type</Text>}
         ></CheckBox>
+        {pledges.length > 0 || requests.length > 0 ? (
+          <View>
+            <Text style={styles.title}>Pledged Requests</Text>
+            <View style={styles.hr}></View>
 
-        <Text style={styles.title}>Pledged Requests</Text>
-        <View style={styles.hr}></View>
-
-        <FlatList
-          data={pledges}
-          renderItem={({ item }) => (
-            <RequestEl
-              pledged={true}
-              data={item}
-              onCancel={() => unPledge(item.key)}
-              onPress={() => showInfo(item.key)}
+            <FlatList
+              data={pledges}
+              renderItem={({ item }) => (
+                <RequestEl
+                  pledged={true}
+                  data={item}
+                  onCancel={() => unPledge(item.key)}
+                  onPress={() => showInfo(item.key)}
+                />
+              )}
+              keyExtractor={(item) => item.key}
             />
-          )}
-          keyExtractor={(item) => item.key}
-        />
-        <Text style={styles.title}>Nearby Requests</Text>
-        <View style={styles.hr}></View>
-        <FlatList
-          data={requests}
-          renderItem={({ item }) => (
-            <RequestEl
-              pledged={false}
-              data={item}
-              onPress={() => showBox(item.key)}
+            <Text style={styles.title}>Nearby Requests</Text>
+            <View style={styles.hr}></View>
+            <FlatList
+              data={requests}
+              renderItem={({ item }) => (
+                <RequestEl
+                  pledged={false}
+                  data={item}
+                  onPress={() => showBox(item.key)}
+                />
+              )}
+              keyExtractor={(item) => item.key}
             />
-          )}
-          keyExtractor={(item) => item.key}
-        />
+          </View>
+        ) : (
+          <Text>No requests were found near your location</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -174,7 +181,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 50,
   },
   title: {
     fontSize: 20,

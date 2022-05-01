@@ -21,7 +21,8 @@ const createRequest = async (req, res) => {
     longtitude: req.body.longtitude,
     bloodType: req.body.bloodType,
     hospital: req.body.hospital,
-    expDate: req.body.expDate
+    expDate: req.body.expDate,
+    units: req.body.units
   };
   const BloodRequest = await BloodRequestModel.create(requestData);
   const responseData = {
@@ -36,7 +37,8 @@ const createRequest = async (req, res) => {
     hospital: requestData.hospital,
     bloodType: requestData.bloodType,
     requestID: BloodRequest._id,
-    expDate: requestData.expDate
+    expDate: requestData.expDate,
+    units: requestData.units
   };
   res.status(StatusCodes.OK).json({ data: responseData });
 };
@@ -68,6 +70,7 @@ const getNearbyRequests = async (req, res) => {
       requestID: element._id,
       creationDate: element.createdAt,
       expirationDate: element.expDate,
+      units: element.units,
       distance: '20km' // TODO: FIX THIS
     });
   }
@@ -134,6 +137,7 @@ const getPledges = async (req, res) => {
       requestID: Request._id,
       creationDate: Request.createdAt,
       expirationDate: Request.expDate,
+      units: Request.units,
       distance: '20km' // TODO: FIX THIS
     }
     pledgeData.push(responseData)
@@ -165,7 +169,8 @@ const getYourRequests = async(req,res) => {
       creationDate: Request.createdAt,
       units: Request.units,
       expirationDate: Request.expDate,
-      requestID: Request._id
+      requestID: Request._id,
+      units: Request.units
     })
     for(Pledge of Pledges){
       const Donor = await UserModel.findById(Pledge.donorID)
