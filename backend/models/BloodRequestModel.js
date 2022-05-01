@@ -24,7 +24,7 @@ const BloodRequestSchema = new mongoose.Schema(
     bloodType: String,
     hospital: String,
     units: Number,
-    expDate: String
+    expDate: String,
   },
   { timestamps: true }
 );
