@@ -67,6 +67,7 @@ const getNearbyRequests = async (req, res) => {
       email: Receiver.email,
       bloodType: Receiver.bloodType,
       phoneNumber: Receiver.phoneNumber,
+      receiverID: Receiver._id
     };
     responseData.push({
       receiver: receiverData,
@@ -134,6 +135,7 @@ const getPledges = async (req, res) => {
       email: Receiver.email,
       phoneNumber: Receiver.phoneNumber,
       bloodType: Receiver.bloodType,
+      receiverID: Receiver._id
     };
     const responseData = {
       receiver: receiverData,
@@ -189,6 +191,7 @@ const getYourRequests = async (req, res) => {
           name: Donor.name,
           email: Donor.email,
           phoneNumber: Donor.phoneNumber,
+          donorID: Donor._id
         },
       });
     }
