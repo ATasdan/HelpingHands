@@ -30,7 +30,7 @@ export default function NearbyRequests(props) {
       const { paramKey } = props.route.params;
       if (!checked) {
         requestData.data.data = requestData.data.data.filter(
-          element => (element.bloodType === paramKey)
+          (element) => element.bloodType === paramKey
         );
       }
       for (const element of pledgeData.data.data) {
@@ -68,7 +68,7 @@ export default function NearbyRequests(props) {
         requests[key].hospital
       }\nContact: ${requests[key].receiver.name}\nDistance:${
         requests[key].distance
-      }\nCreation Date: ${requests[key].creationDate.split("T")[0]}`,
+      }\nCreation Date: ${requests[key].creationDate.split("T")[0]}\nExpiration Date:${requests[key].expirationDate}`,
       [{ text: "Yes", onPress: () => pledge(key) }, { text: "Cancel" }]
     );
   };
@@ -76,7 +76,7 @@ export default function NearbyRequests(props) {
   const showInfo = (key) => {
     Alert.alert(
       "Contact information",
-      `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}`
+      `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}\n`
     );
   };
 

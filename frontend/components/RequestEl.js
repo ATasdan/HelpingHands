@@ -17,7 +17,11 @@ export default function RequestEl({ data, onPress, pledged,onCancel }) {
       <Text>Distance: {data.distance}</Text>
       <Text>
         Creation Date: {data.creationDate.split('T')[0]}
-      </Text></View>
+      </Text>
+      <Text>
+        Expiration Date: {data.expirationDate}
+      </Text>
+      </View>
       {pledged? <TouchableOpacity onPress={onCancel}><MaterialIcons name="cancel" size={36} color="red" /></TouchableOpacity> : null}
     </TouchableOpacity>
   );

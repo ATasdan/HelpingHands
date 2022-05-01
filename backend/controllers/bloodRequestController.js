@@ -67,6 +67,7 @@ const getNearbyRequests = async (req, res) => {
       bloodType: element.bloodType,
       requestID: element._id,
       creationDate: element.createdAt,
+      expirationDate: element.expDate,
       distance: '20km' // TODO: FIX THIS
     });
   }
@@ -132,6 +133,7 @@ const getPledges = async (req, res) => {
       bloodType: Request.bloodType,
       requestID: Request._id,
       creationDate: Request.createdAt,
+      expirationDate: Request.expDate,
       distance: '20km' // TODO: FIX THIS
     }
     pledgeData.push(responseData)
@@ -141,8 +143,6 @@ const getPledges = async (req, res) => {
 };
 
 const deletePledge = async(req,res) => {
-  console.log(req.userID);
-  console.log(req.body.requestID);
   const Pledge = await RequestPledgeModel.findOneAndDelete({donorID:req.userID,requestID:req.body.requestID})
   if(!Pledge){
     throw new BadRequestError('Pledge not found')
@@ -150,10 +150,41 @@ const deletePledge = async(req,res) => {
   res.status(StatusCodes.OK).json({data:Pledge})
 }
 
+const getYourRequests = async(req,res) => {
+  const Requests = await BloodRequestModel.find({receiverID:req.userID})
+  const requestData = []
+  const pledgeData = []
+  for(Request of Requests){
+    const Pledges = await RequestPledgeModel.find({requestID:Request._id})
+    requestData.push({
+      hospital:Request.hospital,
+      bloodType:Request.bloodType,
+      creationDate: Request.createdAt,
+      units: Request.units,
+      expirationDate: Request.expDate,
+      requestID: Request._id
+    })
+    for(pledge of Pledges){
+      const Donor = UserModel.findById(pledge.donorID)
+      pledgeData.push({
+        requestID: Pledge._id,
+        donorData:{
+          name: Donor.name,
+          email: Donor.email,
+          phoneNumber: Donor.phoneNumber
+        }
+      })
+    }
+  }
+
+  res.status(StatusCodes.OK).json({data:{requests:requestData,pledges:pledgeData}})
+}
+
 module.exports = {
   createRequest,
   pledgeToRequest,
   getNearbyRequests,
   getPledges,
-  deletePledge
+  deletePledge,
+  getYourRequests
 };
