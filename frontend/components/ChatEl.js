@@ -4,6 +4,10 @@ import React from "react";
 export default function ChatEl({ color, align, message, date }) {
   let temp = date.split("T")[0].split("-");
   let hour = date.split("T")[1].split(".")[0];
+  let tempHour = hour.split(":")[0];
+  let tempHour2 = parseInt(tempHour) + 3;
+  let tempHour3 =
+    tempHour2.toString() + ":" + hour.split(":")[1] + ":" + hour.split(":")[2];
   let year = temp[0];
   let month = temp[1];
   let day = temp[2];
@@ -12,7 +16,7 @@ export default function ChatEl({ color, align, message, date }) {
     <View>
       <Text
         style={{ alignSelf: align, fontSize: 10 }}
-      >{`${day}/${month} - ${hour}`}</Text>
+      >{`${day}/${month} - ${tempHour3}`}</Text>
       <View
         style={{
           borderRadius: 20,
