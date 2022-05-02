@@ -117,7 +117,7 @@ const BloodTwo = (props) => {
     const location = `location=${latitude},${longitude}`;
     const radius = "&radius=10000";
     const type = "&keyword=hospital";
-    const key = "&key=AIzaSyAi_c0PFNz8AenR8oFNu8Ovg8lBUt2MkU4";
+    //const key = ;
 
     const hospitalSearchUrl = url + location + radius + type + key;
 
@@ -168,7 +168,7 @@ const BloodTwo = (props) => {
     const location = `location=${latitude},${longitude}`;
     const radius = "&radius=10000";
     const type = "&keyword=hospital";
-    const key = "&key=AIzaSyAi_c0PFNz8AenR8oFNu8Ovg8lBUt2MkU4";
+    //const key = ;
 
     const hospitalSearchUrl = url + location + radius + type + key;
 
