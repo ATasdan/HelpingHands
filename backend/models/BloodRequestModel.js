@@ -10,11 +10,11 @@ const BloodRequestSchema = new mongoose.Schema(
       ],
     },
     latitude: {
-      type: String,
+      type: Number,
       required: [true, "Invalid location data provided"],
     },
     longtitude: {
-      type: String,
+      type: Number,
       required: [true, "Invalid location data provided"],
     },
     fulfilled: {
