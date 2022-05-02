@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { api,changeToken } from "../api/api";
+import { api, changeToken } from "../api/api";
 
 // const apiCall = async () => {
 //   const response = await Axios.post(
@@ -38,12 +38,10 @@ import LoadingAnim from "../components/LoadingAnim";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false); // for spinner
 
-  
   const { navigation } = props;
   const apiCall = async () => {
     try {
@@ -52,14 +50,19 @@ const Login = (props) => {
         email: email,
         password: password,
       });
+
       setLoading(false);
 
       // This is only for register and login
-      changeToken(response.data.token)
+      changeToken(response.data.token);
 
-      navigation.navigate("Home", { paramKey: email,bloodType:response.data.data.bloodType });
+      navigation.navigate("Home", {
+        usrName: response.data.data.name,
+        usrPhone: response.data.data.phoneNumber,
+        bloodType: response.data.data.bloodType,
+      });
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       alert("There was an error in logging in. Please try again!");
       console.log(error);
     }
@@ -86,7 +89,6 @@ const Login = (props) => {
         <Text style={{ fontSize: Theme.font.medium }}>Email</Text>
         <TextInput
           style={styles.inputContainer}
-          placeholder="Enter Here"
           onChangeText={(newText) => setEmail(newText.trim())}
           defaultValue={email}
           autoCapitalize="none"

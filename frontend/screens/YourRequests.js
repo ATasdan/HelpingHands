@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import YourRequestEl from "../components/YourRequestEl";
 import LoadingAnim from "../components/LoadingAnim";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function YourRequests() {
+  const navigation = useNavigation()
   const [pledges, setPledges] = useState([]);
   const [requests, setRequests] = useState([]);
   const [loading,setLoading] = useState(false)
@@ -41,6 +44,7 @@ export default function YourRequests() {
       <LoadingAnim isLoading={loading}></LoadingAnim>
       <Text style={styles.title}>Your Requests</Text>
       <View style={styles.hr}></View>
+      {requests.length > 0 ? 
       <FlatList
         data={requests}
         renderItem={({ item }) => (
@@ -52,7 +56,7 @@ export default function YourRequests() {
           />
         )}
         keyExtractor={(item) => item.key}
-      />
+      /> : <Text style={{alignSelf:'center',marginVertical:20}}>You have no active requests</Text>}
     </SafeAreaView>
   );
 }

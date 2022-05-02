@@ -26,11 +26,11 @@ const Register = (props) => {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loading,setLoading] = useState(false) // for spinner
+  const [loading, setLoading] = useState(false); // for spinner
 
   const apiCall = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await api.post("/auth/register", {
         name: username,
         email: email,
@@ -39,16 +39,19 @@ const Register = (props) => {
         phoneNumber: phonenumber,
         address: address,
       });
-      setLoading(false)
+      setLoading(false);
 
       alert("You have successfully registered your account!");
 
       // This is only for register and login
-      changeToken(response.data.token)
+      changeToken(response.data.token);
 
-      navigation.navigate("Home", { paramKey: email, bloodType:response.data.data.bloodType });
+      navigation.navigate("Home", {
+        paramKey: response.data.data.name,
+        bloodType: response.data.data.bloodType,
+      });
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       alert("There was an error in the registration. Please try again!");
       console.log(error);
     }
