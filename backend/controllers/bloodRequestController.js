@@ -18,7 +18,7 @@ const createRequest = async (req, res) => {
     donorID: "",
     receiverID: req.userID,
     latitude: req.body.latitude,
-    longtitude: req.body.longtitude,
+    longitude: req.body.longitude,
     bloodType: req.body.bloodType,
     hospital: req.body.hospital,
     expDate: req.body.expDate,
@@ -33,7 +33,7 @@ const createRequest = async (req, res) => {
       receiverID: req.userID,
     },
     latitude: requestData.latitude,
-    longtitude: requestData.latitude,
+    longitude: requestData.latitude,
     hospital: requestData.hospital,
     bloodType: requestData.bloodType,
     requestID: BloodRequest._id,
@@ -67,7 +67,7 @@ const getNearbyRequests = async (req, res) => {
       email: Receiver.email,
       bloodType: Receiver.bloodType,
       phoneNumber: Receiver.phoneNumber,
-      receiverID: Receiver._id
+      receiverID: Receiver._id,
     };
     responseData.push({
       receiver: receiverData,
@@ -135,7 +135,7 @@ const getPledges = async (req, res) => {
       email: Receiver.email,
       phoneNumber: Receiver.phoneNumber,
       bloodType: Receiver.bloodType,
-      receiverID: Receiver._id
+      receiverID: Receiver._id,
     };
     const responseData = {
       receiver: receiverData,
@@ -191,7 +191,7 @@ const getYourRequests = async (req, res) => {
           name: Donor.name,
           email: Donor.email,
           phoneNumber: Donor.phoneNumber,
-          donorID: Donor._id
+          donorID: Donor._id,
         },
       });
     }

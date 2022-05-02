@@ -7,8 +7,10 @@ import {
 } from "react-native";
 import React from "react";
 import theme from "../styles/theme";
+import { useNavigation } from "@react-navigation/native";
 
 export default function YourRequestEl({ data, pledgees }) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View>
@@ -23,7 +25,13 @@ export default function YourRequestEl({ data, pledgees }) {
             <FlatList
               data={pledgees}
               renderItem={({ item, index }) => (
-                <TouchableOpacity style={styles.touchBg}>
+                <TouchableOpacity
+                  style={styles.touchBg}
+                  onPress={() => navigation.navigate("Chat", {
+                    targetID: item.donorData.donorID,
+                    targetName: item.donorData.name,
+                  })}
+                >
                   <Text style={{ fontWeight: "bold" }}>
                     Pledgee {index + 1}
                   </Text>

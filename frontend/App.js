@@ -18,6 +18,7 @@ import HospitalView from "./screens/CheckOnMap/HospitalView";
 import Camera from "./screens/Camera";
 import NearbyRequests from "./screens/NearbyRequests";
 import YourRequests from './screens/YourRequests'
+import Chat from './screens/Chat'
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -118,6 +119,11 @@ export default function App() {
           options={{ headerShown: false }}
           name="Camera"
           component={Camera}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Chat"
+          component={Chat}
         />
       </Stack.Navigator>
     </NavigationContainer>

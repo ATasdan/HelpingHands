@@ -12,7 +12,7 @@ const BloodRequestSchema = new mongoose.Schema(
     latitude: {
       type: Number,
     },
-    longtitude: {
+    longitude: {
       type: Number,
     },
     fulfilled: {

@@ -13,10 +13,17 @@ import {
 
 import * as Location from "expo-location";
 import Theme from "../../styles/theme";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 import { Picker } from "@react-native-picker/picker";
+import { api } from "../../api/api";
 
 const BloodTwo = (props) => {
+  const { userName, userPhone, userDate, selectedGroup, userGroup, userUnits } =
+    props.route.params;
+
   const [show, SetShow] = useState(true);
   const [showLoading, SetLoading] = useState(false);
 
@@ -24,12 +31,20 @@ const BloodTwo = (props) => {
   const [locPerm, setLocPerm] = useState(false);
   const [latitude, setLatitude] = useState(null); //39.872102
   const [longitude, setLongitude] = useState(null); //32.748339
-  const [pickerValue, setPickerValue] = useState("");
+
+  const [pickerVal, setPickerVal] = useState();
+  const [latitudeMarker, setLatitudeMarker] = useState(0);
+  const [longitudeMarker, setLongitudeMarker] = useState(0);
 
   useEffect(() => {
+    if (latitude === null || longitude === null) {
+      handleHospitalSearchTemp();
+    }
+    if (hospResults.length === 0) {
+      handleHospitalSearchTemp();
+    }
     (async () => {
       try {
-        console.log("use effect");
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status === "granted") {
           let location = await Location.getCurrentPositionAsync({
@@ -51,35 +66,113 @@ const BloodTwo = (props) => {
     })();
   }, []);
 
-  const getLocationAsync = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status === "granted") {
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Highest,
-        maximumAge: 10000,
+  const createRequest = async () => {
+    try {
+      console.log(
+        typeof latitudeMarker,
+        typeof longitudeMarker,
+        selectedGroup,
+        pickerVal,
+        userDate
+      );
+      const response = await api.post("/bloodRequest/create", {
+        latitude: latitudeMarker,
+        longitude: longitudeMarker,
+        bloodType: selectedGroup,
+        hospital: pickerVal,
+        expDate: userDate,
       });
-      setLocPerm(true);
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-    } else {
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  const getLocationAsync = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        let location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+          maximumAge: 10000,
+        });
+        setLocPerm(true);
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+
+        // handleRestaurantSearch();
+      } else {
+        alert("Location permission not granted");
+      }
+    } catch (err) {
+      setLocPerm(false);
       alert("Location permission not granted");
     }
   };
 
-  const handleRestaurantSearch = async () => {
+  const handleHospitalSearchTemp = async () => {
     if (locPerm === false) {
       getLocationAsync();
     }
-    const url = "";
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     const location = `location=${latitude},${longitude}`;
     const radius = "&radius=10000";
     const type = "&keyword=hospital";
     const key = "&key=AIzaSyAi_c0PFNz8AenR8oFNu8Ovg8lBUt2MkU4";
 
-    const restaurantSearchUrl = url + location + radius + type + key;
-    console.log(restaurantSearchUrl);
+    const hospitalSearchUrl = url + location + radius + type + key;
 
-    await fetch(restaurantSearchUrl)
+    await fetch(hospitalSearchUrl)
+      .then((res) => res.json())
+      .then((res) => {
+        var places = []; // This Array WIll contain locations received from google
+        for (let googlePlace of res.results) {
+          var place = {};
+          var lat = googlePlace.geometry.location.lat;
+          var lng = googlePlace.geometry.location.lng;
+          var coordinate = {
+            latitude: lat,
+            longitude: lng,
+          };
+
+          var gallery = [];
+
+          // if (googlePlace.photos) {
+          //   for (let photo of googlePlace.photos) {
+          //     var photoUrl = Urls.GooglePicBaseUrl + photo.photo_reference;
+          //     gallery.push(photoUrl);
+          //   }
+          // }
+
+          place["placeTypes"] = googlePlace.types;
+          place["coordinate"] = coordinate;
+          place["placeId"] = googlePlace.place_id;
+          place["placeName"] = googlePlace.name;
+          place["gallery"] = gallery;
+
+          places.push(place);
+        }
+        setHospResults(places);
+
+        // Do your work here with places Array
+      })
+      .catch((e) => console.log(e));
+
+    //cleanHospitalData();
+  };
+
+  const handleHospitalSearch = async () => {
+    if (locPerm === false) {
+      getLocationAsync();
+    }
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    const location = `location=${latitude},${longitude}`;
+    const radius = "&radius=10000";
+    const type = "&keyword=hospital";
+    const key = "&key=AIzaSyAi_c0PFNz8AenR8oFNu8Ovg8lBUt2MkU4";
+
+    const hospitalSearchUrl = url + location + radius + type + key;
+
+    await fetch(hospitalSearchUrl)
       .then((res) => res.json())
       .then((res) => {
         var places = []; // This Array WIll contain locations received from google
@@ -115,7 +208,7 @@ const BloodTwo = (props) => {
         setTimeout(() => {
           SetLoading(false);
           SetShow(false);
-        }, 2000);
+        }, 1000);
         SetShow(true);
 
         // Do your work here with places Array
@@ -128,7 +221,7 @@ const BloodTwo = (props) => {
   const { navigation } = props;
 
   const viewHospitals = () => {
-    handleRestaurantSearch();
+    handleHospitalSearch();
   };
 
   return (
@@ -161,10 +254,17 @@ const BloodTwo = (props) => {
 
           <View style={styles.inputContainer}>
             <Picker
-              selectedValue={pickerValue}
-              onValueChange={(value) => {
-                setPickerValue(value);
+              selectedValue={pickerVal}
+              onValueChange={(itemValue, itemIndex) => {
+                hospResults.map((objects) => {
+                  if (objects.placeName.toString() === itemValue.toString()) {
+                    setLatitudeMarker(objects.coordinate.latitude);
+                    setLongitudeMarker(objects.coordinate.longitude);
+                  }
+                }),
+                  setPickerVal(itemValue);
               }}
+              dropdownIconColor="black"
               mode="dropdown" // Android only */}
             >
               <Picker.Item label="Select Hospitals" value="Unknown" />
@@ -172,7 +272,7 @@ const BloodTwo = (props) => {
                 return (
                   <Picker.Item
                     label={objects.placeName}
-                    value={objects.placeId}
+                    value={objects.placeName}
                     key={objects.placeId}
                   />
                 );
@@ -181,6 +281,24 @@ const BloodTwo = (props) => {
           </View>
 
           <View style={styles.divider} />
+          <MapView
+            style={{ flex: 1 }}
+            provider={PROVIDER_GOOGLE}
+            showsUserLocation
+            initialRegion={{
+              latitude: 39.872102,
+              longitude: 32.748339,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: latitudeMarker,
+                longitude: longitudeMarker,
+              }}
+            />
+          </MapView>
         </View>
       ) : (
         <></>
@@ -188,7 +306,14 @@ const BloodTwo = (props) => {
 
       <View style={styles.footerContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => {
+            createRequest();
+            navigation.navigate("Home", {
+              usrName: userName,
+              usrPhone: userPhone,
+              bloodType: userGroup,
+            });
+          }}
           style={styles.mainbtn}
         >
           <Text style={{ color: Theme.white, fontWeight: "bold" }}>

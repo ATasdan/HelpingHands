@@ -22,7 +22,7 @@ const guy = "https://randomuser.me/api/portraits/men/42.jpg";
 
 const Home = (props) => {
   const { navigation } = props;
-  const { paramKey, bloodType } = props.route.params;
+  const { paramKey, usrName, usrPhone, bloodType } = props.route.params;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -30,7 +30,7 @@ const Home = (props) => {
           <Image source={{ uri: guy }} style={styles.img} />
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={styles.mainHead}>Welcome</Text>
-            <Text style={styles.subHead}>{paramKey}</Text>
+            <Text style={styles.subHead}>{usrName}</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("Login")}
               style={{ marginTop: 5 }}
@@ -49,6 +49,8 @@ const Home = (props) => {
             iconName="syringe"
             itemName="Ask for Blood"
             navTo="AskBloodOne"
+            userName={usrName}
+            userPhone={usrPhone}
           />
           <MenuItem
             iconName="list"
@@ -72,8 +74,6 @@ const Home = (props) => {
             navTo="BloodHistory"
           />
           <MenuItem iconName="medal" itemName="Show Badges" navTo="Badges" />
-          <MenuItem iconName="teamspeak" itemName="Teams" navTo="Teams" />
-          <MenuItem iconName="smile" itemName="Share Selfie" navTo="Camera" />
           <MenuItem iconName="user" itemName="My Profile" navTo="MyProfile" />
           <MenuItem
             iconName="address-card"

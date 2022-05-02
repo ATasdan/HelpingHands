@@ -14,12 +14,14 @@ import RequestEl from "../components/RequestEl";
 import CheckBox from "react-native-check-box";
 import { api } from "../api/api";
 import LoadingAnim from "../components/LoadingAnim";
+import { useNavigation } from "@react-navigation/native";
 
 export default function NearbyRequests(props) {
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
 
+  const navigation = useNavigation();
   const getData = async () => {
     try {
       setLoading(true);
@@ -79,7 +81,10 @@ export default function NearbyRequests(props) {
     Alert.alert(
       "Contact information",
       `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}\n`
-    );
+    ,[{text: 'Go to Chat',onPress: () => navigation.navigate("Chat", {
+      targetID: pledges[key].receiver.receiverID,
+      targetName: pledges[key].receiver.name,
+    })},{text:'OK'}]);
   };
 
   const pledge = async (key) => {
