@@ -20,6 +20,7 @@ const getAllMessages = async (req, res) => {
   const responseData = {
     sentMessages: SentMessages,
     receivedMessages: ReceivedMessages,
+    yourID: req.userID
   };
   res.status(StatusCodes.OK).json({ data: responseData });
 };
