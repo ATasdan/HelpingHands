@@ -63,14 +63,22 @@ const Login = (props) => {
       });
     } catch (error) {
       setLoading(false);
-      alert("There was an error in logging in. Please try again!");
-      console.log(error);
+      alert("You have entered incorrect credentials");
+      console.log(error.response.data);
     }
   };
 
   const validateLogin = () => {
     if (email.length == 0 || password.length == 0) {
       alert("Please insert all required fields!");
+    } else if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email.trim()
+      )
+    ) {
+      alert("Email is not valid");
+    } else if (password.trim().length < 6) {
+      alert("Password must be longer than 5 letters!");
     } else {
       apiCall();
     }
@@ -91,6 +99,7 @@ const Login = (props) => {
           style={styles.inputContainer}
           onChangeText={(newText) => setEmail(newText.trim())}
           defaultValue={email}
+          placeholder="Enter Email"
           autoCapitalize="none"
         />
         <View style={styles.divider} />
@@ -98,7 +107,7 @@ const Login = (props) => {
         <TextInput
           secureTextEntry={true}
           style={styles.inputContainer}
-          placeholder="Enter Here"
+          placeholder="Enter Password"
           onChangeText={(newText) => setPassword(newText)}
           defaultValue={password}
           autoCapitalize="none"

@@ -46,14 +46,14 @@ const Register = (props) => {
       // This is only for register and login
       changeToken(response.data.token);
 
-      navigation.navigate("Home", {
+      navigation.navigate("Login", {
         paramKey: response.data.data.name,
         bloodType: response.data.data.bloodType,
       });
     } catch (error) {
       setLoading(false);
-      alert("There was an error in the registration. Please try again!");
-      console.log(error);
+      alert("The email is already associated with a different account!");
+      console.log(error.response.data);
     }
   };
 
@@ -67,6 +67,22 @@ const Register = (props) => {
       phonenumber.length == 0
     ) {
       alert("Please insert all required fields!");
+    } else if (/[^a-zA-Z]/.test(username)) {
+      alert("Your name must only contain alphabets");
+    } else if (!/^[0-9]*$/.test(phonenumber)) {
+      alert("Phone number is not valid");
+    } else if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email.trim()
+      )
+    ) {
+      alert("Email is not valid");
+    } else if (phonenumber.length < 11) {
+      alert("Phone number is incomplete");
+    } else if (address.trim().length < 5) {
+      alert("address cannot be shorter than 5 characters!");
+    } else if (password.trim().length < 6) {
+      alert("Password must be longer than 5 letters!");
     } else {
       apiCall();
     }
@@ -90,12 +106,21 @@ const Register = (props) => {
           <View style={styles.divider} />
 
           <Text style={{ fontSize: Theme.font.medium }}>Blood Type</Text>
-          <TextInput
-            style={styles.inputContainer}
-            placeholder="Enter Here"
-            onChangeText={(newText) => setBloodtype(newText)}
-            defaultValue={bloodtype}
-          />
+          <Picker
+            selectedValue={bloodtype}
+            onValueChange={(itemValue, itemIndex) => setBloodtype(itemValue)}
+            mode="dropdown" // Android only
+          >
+            <Picker.Item label="Select Blood Group" value="Unknown" />
+            <Picker.Item label="A+" value="A+" />
+            <Picker.Item label="A-" value="A-" />
+            <Picker.Item label="O-" value="O-" />
+            <Picker.Item label="O+" value="O+" />
+            <Picker.Item label="B-" value="B-" />
+            <Picker.Item label="B+" value="B+" />
+            <Picker.Item label="AB+" value="AB+" />
+            <Picker.Item label="AB-" value="AB-" />
+          </Picker>
 
           <View style={styles.divider} />
 
@@ -116,6 +141,7 @@ const Register = (props) => {
             placeholder="Enter Here"
             onChangeText={(newText) => setPhonenumber(newText)}
             defaultValue={phonenumber}
+            maxLength={11}
           />
 
           <View style={styles.divider} />
