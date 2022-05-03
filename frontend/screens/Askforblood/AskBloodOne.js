@@ -46,12 +46,9 @@ const B1 = (props) => {
     } else if (units === "Select One") {
       alert("please select the number of units needed");
 
-      // } else if (/[^a-zA-Z]/.test(name)) {
-      //   alert("Your name must only contain alphabets");
       // } else if (!/^[0-9]*$/.test(phone)) {
       //   alert("Phone number is not valid");
-      // } else if (phone.length < 11) {
-      //   alert("Phone number is incomplete");
+      // }
     } else {
       navigation.navigate("AskBloodTwo", {
         userName: userName,
@@ -141,10 +138,13 @@ const B1 = (props) => {
             >
               <Picker.Item label="Select Blood Group" value="Unknown" />
               <Picker.Item label="A+" value="A+" />
-              <Picker.Item label="O" value="O" />
-              <Picker.Item label="O+" value="O+" />
               <Picker.Item label="A-" value="A-" />
-              <Picker.Item label="B" value="B" />
+              <Picker.Item label="O-" value="O-" />
+              <Picker.Item label="O+" value="O+" />
+              <Picker.Item label="B-" value="B-" />
+              <Picker.Item label="B+" value="B+" />
+              <Picker.Item label="AB+" value="AB+" />
+              <Picker.Item label="AB-" value="AB-" />
             </Picker>
           </View>
 
