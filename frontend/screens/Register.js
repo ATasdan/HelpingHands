@@ -58,6 +58,7 @@ const Register = (props) => {
   };
 
   const validateRegistration = () => {
+    console.log(bloodtype);
     if (
       username.length == 0 ||
       password.length == 0 ||
@@ -93,7 +94,7 @@ const Register = (props) => {
       <View style={styles.logoContainer}>
         <Text style={styles.text}>Helping Hands</Text>
       </View>
-      <KeyboardAvoidingView behavior="position" style={styles.bodyContainer}>
+      <View behavior="position" style={styles.bodyContainer}>
         <ScrollView>
           <Text style={{ fontSize: Theme.font.medium }}>Name</Text>
           <TextInput
@@ -184,7 +185,7 @@ const Register = (props) => {
 
           <View style={styles.divider} />
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
 
       <View style={{ flex: 0.4 }}>
         <TouchableOpacity style={styles.mainbtn} onPress={validateRegistration}>

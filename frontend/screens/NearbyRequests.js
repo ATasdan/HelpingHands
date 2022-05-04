@@ -15,13 +15,40 @@ import CheckBox from "react-native-check-box";
 import { api } from "../api/api";
 import LoadingAnim from "../components/LoadingAnim";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 
 export default function NearbyRequests(props) {
+  const { navigation } = props;
+  const [latitude, setLatitude] = useState(0); // users latitude are stored
+  const [longitude, setLongitude] = useState(0); //users longitude are stored
+  const [show, setShow] = useState(true);
+
   useEffect(() => {
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status === "granted") {
+          setLoading(true);
+          let location = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Highest,
+            maximumAge: 10000,
+          });
+          setLoading(false);
+
+          setLatitude(location.coords.latitude);
+          setLongitude(location.coords.longitude);
+          setShow(true);
+        }
+      } catch (err) {
+        alert("Location permission not granted");
+        setShow(false);
+      }
+    })();
+
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
 
-  const navigation = useNavigation();
   const getData = async () => {
     try {
       setLoading(true);
@@ -80,11 +107,19 @@ export default function NearbyRequests(props) {
   const showInfo = (key) => {
     Alert.alert(
       "Contact information",
-      `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}\n`
-    ,[{text: 'Go to Chat',onPress: () => navigation.navigate("Chat", {
-      targetID: pledges[key].receiver.receiverID,
-      targetName: pledges[key].receiver.name,
-    })},{text:'OK'}]);
+      `Contact Name: ${pledges[key].receiver.name}\ne-mail Address: ${pledges[key].receiver.email}\nPhone Number: ${pledges[key].receiver.phoneNumber}\n`,
+      [
+        {
+          text: "Go to Chat",
+          onPress: () =>
+            navigation.navigate("Chat", {
+              targetID: pledges[key].receiver.receiverID,
+              targetName: pledges[key].receiver.name,
+            }),
+        },
+        { text: "OK" },
+      ]
+    );
   };
 
   const pledge = async (key) => {
@@ -117,61 +152,83 @@ export default function NearbyRequests(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => getData()}
-          ></RefreshControl>
-        }
-      >
-        <LoadingAnim isLoading={loading}></LoadingAnim>
-        <Text style={[styles.title, { alignSelf: "center" }]}>
-          Blood Requests Near Your Location
-        </Text>
-        <View style={styles.hr}></View>
-        <CheckBox
-          style={{ flex: 1, padding: 10 }}
-          isChecked={checked}
-          onClick={() => setChecked(!checked)}
-          rightTextView={<Text>See Requests that are not your blood type</Text>}
-        ></CheckBox>
-        {pledges.length > 0 || requests.length > 0 ? (
-          <View>
-            <Text style={styles.title}>Pledged Requests</Text>
-            <View style={styles.hr}></View>
+      {show === true ? (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => getData()}
+            ></RefreshControl>
+          }
+        >
+          <LoadingAnim isLoading={loading}></LoadingAnim>
+          <Text style={[styles.title, { alignSelf: "center" }]}>
+            Blood Requests Near Your Location
+          </Text>
+          <View style={styles.hr}></View>
+          <CheckBox
+            style={{ flex: 1, padding: 10 }}
+            isChecked={checked}
+            onClick={() => setChecked(!checked)}
+            rightTextView={
+              <Text>See Requests that are not your blood type</Text>
+            }
+          ></CheckBox>
+          {pledges.length > 0 || requests.length > 0 ? (
+            <View>
+              <Text style={styles.title}>Pledged Requests</Text>
+              <View style={styles.hr}></View>
 
-            <FlatList
-              data={pledges}
-              renderItem={({ item }) => (
-                <RequestEl
-                  pledged={true}
-                  data={item}
-                  onCancel={() => unPledge(item.key)}
-                  onPress={() => showInfo(item.key)}
-                />
-              )}
-              keyExtractor={(item) => item.key}
-            />
-            <Text style={styles.title}>Nearby Requests</Text>
-            <View style={styles.hr}></View>
-            <FlatList
-              data={requests}
-              renderItem={({ item }) => (
-                <RequestEl
-                  pledged={false}
-                  data={item}
-                  onPress={() => showBox(item.key)}
-                />
-              )}
-              keyExtractor={(item) => item.key}
-            />
+              <FlatList
+                data={pledges}
+                renderItem={({ item }) => (
+                  <RequestEl
+                    pledged={true}
+                    data={item}
+                    onCancel={() => unPledge(item.key)}
+                    onPress={() => showInfo(item.key)}
+                  />
+                )}
+                keyExtractor={(item) => item.key}
+              />
+              <Text style={styles.title}>Nearby Requests</Text>
+              <View style={styles.hr}></View>
+              <FlatList
+                data={requests}
+                renderItem={({ item }) => (
+                  <RequestEl
+                    pledged={false}
+                    data={item}
+                    onPress={() => showBox(item.key)}
+                  />
+                )}
+                keyExtractor={(item) => item.key}
+              />
+            </View>
+          ) : (
+            <Text>No requests were found near your location</Text>
+          )}
+        </ScrollView>
+      ) : (
+        <>
+          <LoadingAnim isLoading={show}></LoadingAnim>
+          <View style={styles.warning}>
+            <Text
+              style={{
+                color: "black",
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 18,
+                marginTop: 0,
+                width: 200,
+              }}
+            >
+              Kindly go back and give permission for your location!
+            </Text>
           </View>
-        ) : (
-          <Text>No requests were found near your location</Text>
-        )}
-      </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 }
@@ -184,6 +241,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 3,
   },
+  warning: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#EE7879",
+  },
+
   container: {
     flex: 1,
     paddingHorizontal: 20,
