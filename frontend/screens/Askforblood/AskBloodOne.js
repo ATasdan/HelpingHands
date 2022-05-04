@@ -20,7 +20,7 @@ const B1 = (props) => {
   const { userEmail, userName, userPhone, userBloodType } = props.route.params;
 
   const [group, setgroup] = useState("Select Blood Group");
-  const [units, setunits] = useState("Select One");
+
   const [date, setdate] = useState(new Date());
   const [mode, setmode] = useState("date");
   const [show, setshow] = useState(false);
@@ -43,12 +43,6 @@ const B1 = (props) => {
       alert("please pick a date!");
     } else if (group === "Select Blood Group") {
       alert("please select a blood group");
-    } else if (units === "Select One") {
-      alert("please select the number of units needed");
-
-      // } else if (!/^[0-9]*$/.test(phone)) {
-      //   alert("Phone number is not valid");
-      // }
     } else {
       navigation.navigate("AskBloodTwo", {
         userName: userName,
@@ -56,7 +50,6 @@ const B1 = (props) => {
         userDate: dateText,
         userBlood: userBloodType,
         selectedGroup: group,
-        userUnits: units,
       });
     }
   };
@@ -152,16 +145,6 @@ const B1 = (props) => {
           <Text style={{ fontSize: Theme.font.medium }}>
             Number of Units Needed
           </Text>
-          <View style={styles.inputContainerNoPad}>
-            <Picker
-              selectedValue={units}
-              onValueChange={(itemValue, itemIndex) => setunits(itemValue)}
-            >
-              <Picker.Item label="Select One" value="Unknown" />
-              <Picker.Item label="1" value="1" />
-              <Picker.Item label="2" value="2" />
-            </Picker>
-          </View>
         </ScrollView>
       </View>
 

@@ -22,7 +22,7 @@ import { api } from "../../api/api";
 import LoadingAnim from "../../components/LoadingAnim";
 import { GOOGLE_API, MAPS_API } from "@env";
 const BloodTwo = (props) => {
-  const { userName, userPhone, userDate, selectedGroup, userGroup, userUnits } =
+  const { userName, userPhone, userDate, selectedGroup, userGroup } =
     props.route.params;
 
   const [show, SetShow] = useState(true);
