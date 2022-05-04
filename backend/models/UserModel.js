@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Blood type field cannot be empty"],
       enum: {
-        values: ["0+", "0-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
+        values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
         message: "Invalid blood type",
       },
     },
