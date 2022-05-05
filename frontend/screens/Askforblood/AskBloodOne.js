@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const B1 = (props) => {
   const { navigation } = props;
-  const { userEmail, userName, userPhone, userBloodType } = props.route.params;
+  const { userName, userPhone, bloodType, userEmail } = props.route.params;
 
   const [group, setgroup] = useState("Select Blood Group");
 
@@ -47,8 +47,9 @@ const B1 = (props) => {
       navigation.navigate("AskBloodTwo", {
         userName: userName,
         userPhone: userPhone,
+        userEmail: userEmail,
         userDate: dateText,
-        userBlood: userBloodType,
+        userBlood: bloodType,
         selectedGroup: group,
       });
     }
@@ -140,11 +141,6 @@ const B1 = (props) => {
               <Picker.Item label="AB-" value="AB-" />
             </Picker>
           </View>
-
-          <View style={styles.divider} />
-          <Text style={{ fontSize: Theme.font.medium }}>
-            Number of Units Needed
-          </Text>
         </ScrollView>
       </View>
 

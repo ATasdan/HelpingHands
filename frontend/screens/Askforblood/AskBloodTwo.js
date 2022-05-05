@@ -22,7 +22,7 @@ import { api } from "../../api/api";
 import LoadingAnim from "../../components/LoadingAnim";
 import { GOOGLE_API, MAPS_API } from "@env";
 const BloodTwo = (props) => {
-  const { userName, userPhone, userDate, selectedGroup, userGroup } =
+  const { userName, userPhone, userDate, selectedGroup, userBlood, userEmail } =
     props.route.params;
 
   const [show, SetShow] = useState(true);
@@ -36,8 +36,20 @@ const BloodTwo = (props) => {
   const [pickerVal, setPickerVal] = useState("Select Hospitals");
   const [latitudeMarker, setLatitudeMarker] = useState(0);
   const [longitudeMarker, setLongitudeMarker] = useState(0);
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
+  const [distance, setDistance] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    console.log("latitudeMarker has changed to ");
+    console.log(latitudeMarker);
+    console.log("longitudeMarker has changed to ");
+    console.log(longitudeMarker);
+    if (latitudeMarker != latitude) {
+      setLoading(true);
+      distanceCalculator();
+      setLoading(false); // This is be executed when the state changes
+    }
+  }, [latitudeMarker]);
 
   useEffect(() => {
     if (latitude === null || longitude === null) {
@@ -58,8 +70,6 @@ const BloodTwo = (props) => {
           setLocPerm(true);
           setLatitude(location.coords.latitude);
           setLongitude(location.coords.longitude);
-          setLatitudeMarker(latitude);
-          setLongitudeMarker(longitude);
 
           // handleRestaurantSearch();
         } else {
@@ -88,10 +98,12 @@ const BloodTwo = (props) => {
           hospital: pickerVal,
           expDate: userDate,
         });
+        alert("You have successfully created a request!");
         navigation.navigate("Home", {
           usrName: userName,
           usrPhone: userPhone,
-          bloodType: userGroup,
+          bloodType: userBlood,
+          usrEmail: userEmail,
         });
       } catch (error) {
         console.log(error.response.data);
@@ -179,8 +191,12 @@ const BloodTwo = (props) => {
     const destinations = `&destinations=${latitudeMarker},${longitudeMarker}`;
     const key = GOOGLE_API;
 
+    // console.log(latitudeMarker);
+    // console.log(longitudeMarker);
+    // console.log(pickerVal);
     const distanceUrl = url + origins + destinations + key;
 
+    console.log(distanceUrl);
     await fetch(distanceUrl)
       .then((res) => res.json())
       .then((res) => {
@@ -195,6 +211,9 @@ const BloodTwo = (props) => {
   };
 
   const handleHospitalSearch = async () => {
+    setLatitudeMarker(latitude);
+    setLongitudeMarker(longitude);
+
     if (locPerm === false) {
       getLocationAsync();
     }
@@ -296,18 +315,20 @@ const BloodTwo = (props) => {
               <Picker
                 selectedValue={pickerVal}
                 onValueChange={(itemValue, itemIndex) => {
+                  setPickerVal(itemValue);
+
                   hospResults.map((objects) => {
                     if (objects.placeName.toString() === itemValue.toString()) {
                       setLatitudeMarker(objects.coordinate.latitude);
                       setLongitudeMarker(objects.coordinate.longitude);
+
+                      console.log(objects.coordinate.latitude);
+                      console.log(objects.coordinate.longitude);
+                      console.log("\n im priting out markers now");
+                      console.log(latitudeMarker);
+                      console.log(longitudeMarker);
                     }
-                  }),
-                    setPickerVal(itemValue);
-
-                  setLoading(true);
-                  distanceCalculator();
-
-                  setLoading(false);
+                  });
                 }}
                 dropdownIconColor="black"
                 mode="dropdown" // Android only */}
