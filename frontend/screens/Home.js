@@ -22,7 +22,9 @@ const guy = "https://randomuser.me/api/portraits/men/42.jpg";
 
 const Home = (props) => {
   const { navigation } = props;
-  const { paramKey, usrName, usrPhone, bloodType } = props.route.params;
+  const { paramKey, usrName, usrPhone, bloodType, usrEmail } =
+    props.route.params;
+  console.log(usrEmail);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -51,6 +53,8 @@ const Home = (props) => {
             navTo="AskBloodOne"
             userName={usrName}
             userPhone={usrPhone}
+            bloodType={bloodType}
+            userEmail={usrEmail}
           />
           <MenuItem
             iconName="list"
@@ -63,11 +67,11 @@ const Home = (props) => {
             navTo="NearbyRequests"
             paramKey={bloodType}
           />
-          <MenuItem
+          {/* <MenuItem
             iconName="grip-lines"
             itemName="My blood Journey"
             navTo="MyBloodJourney"
-          />
+          /> */}
           <MenuItem
             iconName="history"
             itemName="My History"
@@ -79,6 +83,10 @@ const Home = (props) => {
             iconName="address-card"
             itemName="My Card"
             navTo="BloodCard"
+            userName={usrName}
+            userPhone={usrPhone}
+            bloodType={bloodType}
+            userEmail={usrEmail}
           />
         </ScrollView>
       </View>
