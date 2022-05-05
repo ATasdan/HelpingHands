@@ -9,9 +9,7 @@ const MenuItem = (props) => {
   const navigation = useNavigation();
 
   const { paramKey } = props;
-  console.log("\n\n");
-  console.log(props.userName);
-  console.log(props.userPhone);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -19,6 +17,8 @@ const MenuItem = (props) => {
           paramKey: paramKey,
           userName: props.userName,
           userPhone: props.userPhone,
+          bloodType: props.bloodType,
+          userEmail: props.userEmail,
         })
       }
       style={styles.container}
