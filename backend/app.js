@@ -24,7 +24,37 @@ const authenticationMiddleware = require("./middleware/authentication");
 
 // middleware
 app.use(express.json());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'", "https://www.youtube.com"],
+        scriptSrc: [
+          "'self'",
+          "https://kit.fontawesome.com/",
+          "https://www.youtube.com",
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com/",
+        ],
+        connectSrc: [
+          "'self'",
+          "https://kit.fontawesome.com/",
+          "https://ka-f.fontawesome.com",
+          "https://www.youtube.com",
+        ],
+        frameSrc: ["'self'","https://www.youtube.com"],
+        objectSrc: ["'self'","https://www.youtube.com"]
+      },
+    },
+    crossOriginEmbedderPolicy:false,
+    crossOriginResourcePolicy: {
+      policy: "cross-origin",
+    },
+  })
+);
 app.use(cors());
 app.use(xss());
 app.use(rateLimiter({ windowMs: 60 * 1000, max: 100 }));
