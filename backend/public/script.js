@@ -136,9 +136,19 @@ const showPoster = () => {
   reportsContainer.opacity = "0";
 };
 
+const openFile = (path) => {
+  window.open(path,'_blank')
+}
+
 document.getElementById("button1").addEventListener("click",showTeam)
 document.getElementById("button2").addEventListener("click",showDemo)
 document.getElementById("button3").addEventListener("click",showReports)
 document.getElementById("button4").addEventListener("click",showPoster)
+document.getElementById("rep1").addEventListener("click",() => window.open('./spec.pdf','_blank'))
+document.getElementById("rep2").addEventListener("click",() => window.open('./analysis.pdf','_blank'))
+document.getElementById("rep3").addEventListener("click",() => window.open('./high.pdf','_blank'))
+document.getElementById("rep4").addEventListener("click",() => window.open('./low.pdf','_blank'))
+document.getElementById("rep5").addEventListener("click",() => window.open('./final.pdf','_blank'))
+
 
 init();
