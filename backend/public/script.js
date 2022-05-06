@@ -12,6 +12,12 @@ const demoContainer = document.querySelector(".demoContainer").style;
 const reportsContainer = document.querySelector(".reportsContainer").style;
 const posterContainer = document.querySelector(".posterContainer").style;
 
+
+document.getElementById("button1").addEventListener("click",showTeam)
+document.getElementById("button2").addEventListener("click",showDemo)
+document.getElementById("button3").addEventListener("click",showReports)
+document.getElementById("button4").addEventListener("click",showPoster)
+
 const init = () => {
   setTimeout(() => {
     logo1.transition = "1250ms";
@@ -61,6 +67,7 @@ const init = () => {
     button4.opacity = "1";
   }, 4450);
 };
+
 
 const showTeam = () => {
   teamContainer.transition = "750ms";
