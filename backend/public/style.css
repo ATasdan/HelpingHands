@@ -73,18 +73,101 @@ body {
 }
 
 .buttonContainer button:active {
-    transform: scale(0.97);
+  transform: scale(0.97);
 }
 
 .teamContainer {
-    width: 100vw;
-    position: absolute;
-    bottom: 0;
-    height: 400px;
-    display: flex;
-    justify-content: center;
+  width: 85vw;
+  position: absolute;
+  height: 300px;
+  margin-top: 300px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
 }
 
-.teamContainer i{
-    font-size: 90px;
+.teamContainer i {
+  font-size: 90px;
+}
+.teamContainer2 {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.devs {
+  display: flex;
+}
+
+.userBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 15px 0 15px;
+}
+
+.demoContainer {
+  width: 85vw;
+  position: absolute;
+  height: 300px;
+  margin-top: 300px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+  visibility: hidden;
+}
+
+.reportsContainer {
+  width: 85vw;
+  position: absolute;
+  height: 300px;
+  margin-top: 300px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.reportBox {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 10px;
+  height: 150px;
+}
+
+.reportBox i {
+  font-size: 30px;
+}
+
+.reportBox:hover {
+  color: white;
+  background-color: darkred;
+}
+
+.reportBox:active {
+  transform: scale(0.97);
+}
+
+.posterContainer {
+  width: 85vw;
+  position: absolute;
+  height: 300px;
+  margin-top: 450px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
 }

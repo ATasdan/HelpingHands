@@ -23,32 +23,95 @@
         iste est nulla? Modi consectetur accusamus error, nulla harum laborum.
       </p>
       <div class="buttonContainer">
-        <button id="button1">Team</button>
-        <button id="button2">Demo</button>
-        <button id="button3">Reports</button>
-        <button id="button4">Documentation</button>
+        <button onclick="showTeam()" id="button1">Team</button>
+        <button onclick="showDemo()" id="button2">Demo</button>
+        <button onclick="showReports()" id="button3">Reports</button>
+        <button onclick="showPoster()" id="button4">Poster</button>
       </div>
 
       <div class="teamContainer">
-        <div class="userBox">
-          <i class="fa-regular fa-user"></i>
-          <h4>Mustafa Anıl Taşdan</h4>
+        <div class="teamContainer2">
+          <h1 style="align-self: center">Team</h1>
+          <div class="devs">
+            <div class="userBox">
+              <i class="fa-regular fa-user"></i>
+              <h4>Hassam Abdullah</h4>
+            </div>
+
+            <div class="userBox">
+              <i class="fa-regular fa-user"></i>
+              <h4>Metehan Gürbüz</h4>
+            </div>
+
+            <div class="userBox">
+              <i class="fa-regular fa-user"></i>
+              <h4>Mustafa Anıl Taşdan</h4>
+            </div>
+
+            <div class="userBox">
+              <i class="fa-regular fa-user"></i>
+              <h4>Rola Younis</h4>
+            </div>
+          </div>
+        </div>
+        <div class="teamContainer2">
+          <h1>Supervisor</h1>
+          <div class="instructors">
+            <div class="userBox">
+              <i class="fa-regular fa-user"></i>
+              <h4>Dr. İbrahim Körpeoğlu</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demoContainer">
+        <iframe
+          id="myythtml5player"
+          frameborder="0"
+          allowfullscreen="1"
+          allow="autoplay; encrypted-media"
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/4oIlSVIUJRk"
+          data-tooltip-align="b,c"
+          data-tooltip="YouTube video player"
+          aria-label="YouTube video player"
+          data-title="YouTube video player"
+        ></iframe>
+      </div>
+
+      <div class="reportsContainer">
+        <div onClick="window.open('./spec.pdf', '_blank');" class="reportBox">
+          <i class="fa-solid fa-file"></i>
+          <h2>Specifications Report</h2>
+        </div>
+        <div
+          onClick="window.open('./analysis.pdf', '_blank');"
+          class="reportBox"
+        >
+          <i class="fa-solid fa-file"></i>
+          <h2>Analysis Report</h2>
         </div>
 
-        <div class="userBox">
-          <i class="fa-regular fa-user"></i>
-          <h4>Hassam Abdullah</h4>
+        <div onClick="window.open('./high.pdf', '_blank');" class="reportBox">
+          <i class="fa-solid fa-file"></i>
+          <h2>High Level Design Report</h2>
         </div>
 
-        <div class="userBox">
-          <i class="fa-regular fa-user"></i>
-          <h4>Rola Younis</h4>
+        <div onClick="window.open('./low.pdf', '_blank');" class="reportBox">
+          <i class="fa-solid fa-file"></i>
+          <h2>Low Level Design Report</h2>
         </div>
 
-        <div class="userBox">
-          <i class="fa-regular fa-user"></i>
-          <h4>Metehan Gürbüz</h4>
+        <div onClick="window.open('./final.pdf', '_blank');" class="reportBox">
+          <i class="fa-solid fa-file"></i>
+          <h2>Final Report</h2>
         </div>
+      </div>
+
+      <div class="posterContainer">
+        <img src="./poster.jpg" alt="" style="width: 500px; height: 500px" />
       </div>
     </div>
   </body>

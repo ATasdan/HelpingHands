@@ -7,6 +7,10 @@ const button1 = document.getElementById("button1").style;
 const button2 = document.getElementById("button2").style;
 const button3 = document.getElementById("button3").style;
 const button4 = document.getElementById("button4").style;
+const teamContainer = document.querySelector(".teamContainer").style;
+const demoContainer = document.querySelector(".demoContainer").style;
+const reportsContainer = document.querySelector(".reportsContainer").style;
+const posterContainer = document.querySelector(".posterContainer").style;
 
 const init = () => {
   setTimeout(() => {
@@ -56,6 +60,78 @@ const init = () => {
     button4.transition = "400ms";
     button4.opacity = "1";
   }, 4450);
+};
+
+const showTeam = () => {
+  teamContainer.transition = "750ms";
+  demoContainer.transition = "750ms";
+  reportsContainer.transition = "750ms";
+  posterContainer.transition = "750ms";
+
+  setTimeout(() => {
+    teamContainer.visibility = "visible";
+    teamContainer.opacity = "1";
+  }, 500);
+  demoContainer.visibility = "hidden";
+  demoContainer.opacity = "0";
+  reportsContainer.visibility = "hidden";
+  reportsContainer.opacity = "0";
+  posterContainer.visibility = "hidden";
+  posterContainer.opacity = "0";
+};
+
+const showDemo = () => {
+  teamContainer.transition = "750ms";
+  demoContainer.transition = "750ms";
+  reportsContainer.transition = "750ms";
+  posterContainer.transition = "750ms";
+
+  setTimeout(() => {
+    demoContainer.visibility = "visible";
+    demoContainer.opacity = "1";
+  }, 500);
+  teamContainer.visibility = "hidden";
+  teamContainer.opacity = "0";
+  reportsContainer.visibility = "hidden";
+  reportsContainer.opacity = "0";
+  posterContainer.visibility = "hidden";
+  posterContainer.opacity = "0";
+};
+
+const showReports = () => {
+  teamContainer.transition = "750ms";
+  demoContainer.transition = "750ms";
+  reportsContainer.transition = "750ms";
+  posterContainer.transition = "750ms";
+
+  setTimeout(() => {
+    reportsContainer.visibility = "visible";
+    reportsContainer.opacity = "1";
+  }, 500);
+  teamContainer.visibility = "hidden";
+  teamContainer.opacity = "0";
+  demoContainer.visibility = "hidden";
+  demoContainer.opacity = "0";
+  posterContainer.visibility = "hidden";
+  posterContainer.opacity = "0";
+};
+
+const showPoster = () => {
+  teamContainer.transition = "750ms";
+  demoContainer.transition = "750ms";
+  reportsContainer.transition = "750ms";
+  posterContainer.transition = "750ms";
+
+  setTimeout(() => {
+    posterContainer.visibility = "visible";
+    posterContainer.opacity = "1";
+  }, 500);
+  teamContainer.visibility = "hidden";
+  teamContainer.opacity = "0";
+  demoContainer.visibility = "hidden";
+  demoContainer.opacity = "0";
+  reportsContainer.visibility = "hidden";
+  reportsContainer.opacity = "0";
 };
 
 init();
