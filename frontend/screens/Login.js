@@ -35,14 +35,38 @@ import Theme from "../styles/theme";
 const logo = "https://cdn-icons-png.flaticon.com/512/205/205916.png";
 import { Picker } from "@react-native-picker/picker";
 import LoadingAnim from "../components/LoadingAnim";
+import { get } from "react-native/Libraries/Utilities/PixelRatio";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false); // for spinner
+  const [bool, setBool] = useState(false);
 
   const { navigation } = props;
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem(email, value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(email);
+      if (value !== null) {
+        if (value === "secondtime") {
+          setBool(true);
+        }
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const apiCall = async () => {
     try {
       setLoading(true);
@@ -60,6 +84,7 @@ const Login = (props) => {
         usrName: response.data.data.name,
         usrPhone: response.data.data.phoneNumber,
         bloodType: response.data.data.bloodType,
+        usrEmail: response.data.data.email,
       });
     } catch (error) {
       setLoading(false);
@@ -80,6 +105,11 @@ const Login = (props) => {
     } else if (password.trim().length < 6) {
       alert("Password must be longer than 5 letters!");
     } else {
+      getData();
+      if (!bool) {
+        storeData("firsttime");
+      }
+
       apiCall();
     }
   };

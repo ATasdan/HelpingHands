@@ -24,7 +24,79 @@ const Home = (props) => {
   const { navigation } = props;
   const { paramKey, usrName, usrPhone, bloodType, usrEmail } =
     props.route.params;
-  console.log(usrEmail);
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem(usrEmail, value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const storeUnique = async (value) => {
+    try {
+      let unique = usrEmail + "unique";
+      console.log(unique);
+      await AsyncStorage.setItem(unique, value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const storeRequest = async (value) => {
+    try {
+      let unique = usrEmail + "request";
+      console.log(unique);
+      await AsyncStorage.setItem(unique, value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getRequest = async () => {
+    try {
+      let unique = usrEmail + "request";
+      const value = await AsyncStorage.getItem(unique);
+      console.log(value);
+
+      if (value !== null) {
+        if (value == "firstrequest") {
+          alert(
+            "Congratulations! You have unlocked a badge. View it in Show Badges"
+          );
+          storeRequest("secondrequest");
+        }
+      } else {
+        console.log("empty");
+      }
+    } catch (e) {
+      console.log("error in home screen async");
+    }
+  };
+
+  useEffect(() => {
+    getData();
+    getRequest();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(usrEmail);
+
+      if (value !== null) {
+        if (value === "firsttime") {
+          console.log("yes this is the first time");
+          alert(
+            "Congratulations! You have unlocked a badge. View it in Show Badges"
+          );
+          storeData("secondtime");
+
+          storeUnique("showfirstbadge");
+        }
+      }
+    } catch (e) {
+      console.log("error in home screen async");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -77,7 +149,13 @@ const Home = (props) => {
             itemName="My History"
             navTo="BloodHistory"
           />
-          <MenuItem iconName="medal" itemName="Show Badges" navTo="Badges" />
+          <MenuItem
+            iconName="medal"
+            itemName="Show Badges"
+            navTo="Badges"
+            userEmail={usrEmail}
+            userName={usrName}
+          />
           <MenuItem iconName="user" itemName="My Profile" navTo="MyProfile" />
           <MenuItem
             iconName="address-card"
