@@ -42,7 +42,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false); // for spinner
-  const [bool, setBool] = useState(false);
+  const [boolval, setBoolVal] = useState(false);
 
   const { navigation } = props;
 
@@ -57,9 +57,10 @@ const Login = (props) => {
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem(email);
+
       if (value !== null) {
         if (value === "secondtime") {
-          setBool(true);
+          setBoolVal(true);
         }
       }
     } catch (e) {
@@ -106,7 +107,9 @@ const Login = (props) => {
       alert("Password must be longer than 5 letters!");
     } else {
       getData();
-      if (!bool) {
+      console.log(boolval);
+      if (!boolval) {
+        console.log("im inside bool");
         storeData("firsttime");
       }
 

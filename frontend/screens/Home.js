@@ -55,7 +55,7 @@ const Home = (props) => {
     try {
       let unique = usrEmail + "request";
       const value = await AsyncStorage.getItem(unique);
-      console.log(value);
+      // console.log(value);
 
       if (value !== null) {
         if (value == "firstrequest") {
@@ -65,7 +65,7 @@ const Home = (props) => {
           storeRequest("secondrequest");
         }
       } else {
-        console.log("empty");
+        //console.log("get request is empty");
       }
     } catch (e) {
       console.log("error in home screen async");
