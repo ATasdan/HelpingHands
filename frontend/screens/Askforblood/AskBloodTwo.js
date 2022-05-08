@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //set a boolean value and have the loading icon rotate until hospresults is not empty else remove it with a conditional operator
 
@@ -38,6 +39,32 @@ const BloodTwo = (props) => {
   const [longitudeMarker, setLongitudeMarker] = useState(0);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [bool, setBool] = useState(false);
+
+  const storeData = async (value) => {
+    try {
+      let unique = userEmail + "request";
+      await AsyncStorage.setItem(unique, value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getData = async () => {
+    try {
+      let unique = userEmail + "request";
+
+      const value = await AsyncStorage.getItem(unique);
+
+      if (value !== null) {
+        if (value === "secondrequest") {
+          setBool(true);
+        }
+      }
+    } catch (e) {
+      console.log("error in home screen async");
+    }
+  };
 
   useEffect(() => {
     console.log("latitudeMarker has changed to ");
@@ -98,6 +125,12 @@ const BloodTwo = (props) => {
           hospital: pickerVal,
           expDate: userDate,
         });
+        getData();
+
+        if (!bool) {
+          storeData("firstrequest");
+        }
+
         alert("You have successfully created a request!");
         navigation.navigate("Home", {
           usrName: userName,
