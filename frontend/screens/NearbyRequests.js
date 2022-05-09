@@ -115,6 +115,7 @@ export default function NearbyRequests(props) {
             navigation.navigate("Chat", {
               targetID: pledges[key].receiver.receiverID,
               targetName: pledges[key].receiver.name,
+              targetType: "NearbyRequests",
             }),
         },
         { text: "OK" },
@@ -179,7 +180,6 @@ export default function NearbyRequests(props) {
             <View>
               <Text style={styles.title}>Pledged Requests</Text>
               <View style={styles.hr}></View>
-
               <FlatList
                 data={pledges}
                 renderItem={({ item }) => (

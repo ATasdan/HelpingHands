@@ -144,11 +144,7 @@ const Home = (props) => {
             itemName="My blood Journey"
             navTo="MyBloodJourney"
           /> */}
-          <MenuItem
-            iconName="history"
-            itemName="My History"
-            navTo="BloodHistory"
-          />
+
           <MenuItem
             iconName="medal"
             itemName="Show Badges"

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import YourRequestEl from "../components/YourRequestEl";
@@ -41,21 +48,25 @@ export default function YourRequests() {
   return (
     <SafeAreaView style={styles.container}>
       <LoadingAnim isLoading={loading}></LoadingAnim>
+
       <Text style={styles.title}>Your Requests</Text>
       <View style={styles.hr}></View>
       {requests.length > 0 ? (
-        <FlatList
-          data={requests}
-          renderItem={({ item }) => (
-            <YourRequestEl
-              data={item}
-              pledgees={pledges.filter(
-                (element) => element.requestID === item.requestID
-              )}
-            />
-          )}
-          keyExtractor={(item) => item.key}
-        />
+        <>
+          <FlatList
+            data={requests}
+            renderItem={({ item }) => (
+              <YourRequestEl
+                data={item}
+                refresh={getData}
+                pledgees={pledges.filter(
+                  (element) => element.requestID === item.requestID
+                )}
+              />
+            )}
+            keyExtractor={(item) => item.key}
+          />
+        </>
       ) : (
         <Text style={{ alignSelf: "center", marginVertical: 20 }}>
           You have no active requests
