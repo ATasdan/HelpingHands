@@ -155,10 +155,17 @@ const getPledges = async (req, res) => {
 };
 
 const deletePledge = async (req, res) => {
-  const Pledge = await RequestPledgeModel.findOneAndDelete({
-    donorID: req.userID,
-    requestID: req.body.requestID,
-  });
+  if (req.body.donorID) {
+    const Pledge = await RequestPledgeModel.findOneAndDelete({
+      donorID: req.body.donorID,
+      requestID: req.body.requestID,
+    });
+  } else {
+    const Pledge = await RequestPledgeModel.findOneAndDelete({
+      donorID: req.userID,
+      requestID: req.body.requestID,
+    });
+  }
   if (!Pledge) {
     throw new BadRequestError("Pledge not found");
   }
