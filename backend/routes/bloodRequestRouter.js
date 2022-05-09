@@ -8,6 +8,7 @@ const {
   getPledges,
   deletePledge,
   getYourRequests,
+  cancelRequest,
 } = require("../controllers/bloodRequestController");
 
 router.route("/create").post(createRequest);
@@ -17,5 +18,5 @@ router
   .post(pledgeToRequest)
   .get(getPledges)
   .delete(deletePledge);
-router.route("/yourRequests").get(getYourRequests);
+router.route("/yourRequests").get(getYourRequests).delete(cancelRequest);
 module.exports = router;

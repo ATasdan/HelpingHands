@@ -46,14 +46,14 @@ const BJ = (props) => {
 
   useEffect(() => {
     getData();
+    getDataRequest();
   }, []);
 
   const getData = async () => {
     try {
       let unique = userEmail + "unique";
-      console.log(unique);
+
       const value = await AsyncStorage.getItem(unique);
-      console.log(value);
 
       if (value !== null) {
         if (value === "showfirstbadge") {
@@ -65,12 +65,6 @@ const BJ = (props) => {
               badgeImage:
                 "https://i.pinimg.com/originals/11/5f/0a/115f0ac90dfc685ff3564a27cb9e11d1.png",
               badgeName: "Account Created",
-            },
-            {
-              id: "2",
-              badgeImage:
-                "https://cdn4.iconfinder.com/data/icons/badges-9/66/31-512.png",
-              badgeName: "First Request",
             },
           ]);
         }
@@ -85,10 +79,10 @@ const BJ = (props) => {
       let unique = userEmail + "request";
       console.log(unique);
       const value = await AsyncStorage.getItem(unique);
-      console.log(value);
 
       if (value !== null) {
         if (value === "secondrequest") {
+          console.log(value);
           setData([
             {
               id: "1",
@@ -96,6 +90,12 @@ const BJ = (props) => {
               badgeImage:
                 "https://i.pinimg.com/originals/11/5f/0a/115f0ac90dfc685ff3564a27cb9e11d1.png",
               badgeName: "Account Created",
+            },
+            {
+              id: "2",
+              badgeImage:
+                "https://cdn4.iconfinder.com/data/icons/badges-9/66/31-512.png",
+              badgeName: "First Request",
             },
           ]);
         }
