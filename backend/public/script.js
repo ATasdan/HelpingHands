@@ -12,7 +12,6 @@ const demoContainer = document.querySelector(".demoContainer").style;
 const reportsContainer = document.querySelector(".reportsContainer").style;
 const posterContainer = document.querySelector(".posterContainer").style;
 
-
 const init = () => {
   setTimeout(() => {
     logo1.transition = "1250ms";
@@ -62,7 +61,6 @@ const init = () => {
     button4.opacity = "1";
   }, 4450);
 };
-
 
 const showTeam = () => {
   teamContainer.transition = "750ms";
@@ -137,18 +135,27 @@ const showPoster = () => {
 };
 
 const openFile = (path) => {
-  window.open(path,'_blank')
-}
+  window.open(path, "_blank");
+};
 
-document.getElementById("button1").addEventListener("click",showTeam)
-document.getElementById("button2").addEventListener("click",showDemo)
-document.getElementById("button3").addEventListener("click",showReports)
-document.getElementById("button4").addEventListener("click",showPoster)
-document.getElementById("rep1").addEventListener("click",() => window.open('./spec.pdf','_blank'))
-document.getElementById("rep2").addEventListener("click",() => window.open('./analysis.pdf','_blank'))
-document.getElementById("rep3").addEventListener("click",() => window.open('./high.pdf','_blank'))
-document.getElementById("rep4").addEventListener("click",() => window.open('./low.pdf','_blank'))
-document.getElementById("rep5").addEventListener("click",() => window.open('./final.pdf','_blank'))
-
+document.getElementById("button1").addEventListener("click", showTeam);
+document.getElementById("button2").addEventListener("click", showDemo);
+document.getElementById("button3").addEventListener("click", showReports);
+document.getElementById("button4").addEventListener("click", showPoster);
+document
+  .getElementById("rep1")
+  .addEventListener("click", () => window.open("./spec.pdf", "_blank"));
+document
+  .getElementById("rep2")
+  .addEventListener("click", () => window.open("./analysis.pdf", "_blank"));
+document
+  .getElementById("rep3")
+  .addEventListener("click", () => window.open("./high.pdf", "_blank"));
+document
+  .getElementById("rep4")
+  .addEventListener("click", () => window.open("./low.pdf", "_blank"));
+document
+  .getElementById("rep5")
+  .addEventListener("click", () => window.open("./final.pdf", "_blank"));
 
 init();

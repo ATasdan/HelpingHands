@@ -43,6 +43,7 @@ export default function Chat(props) {
   };
 
   const sendMessage = async (message) => {
+    this.textInput.clear()
     console.log("here");
     try {
       const response = await api.post("/chat/sendMessage", {
@@ -98,6 +99,7 @@ export default function Chat(props) {
           />
         </View>
         <TextInput
+          ref={input => {this.textInput = input}}
           style={styles.input}
           onChangeText={setText}
           placeholder="Send a message"

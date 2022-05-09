@@ -1,5 +1,5 @@
 {
-  "name": "fiverr",
+  "name": "HelpingHands",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -35,7 +35,18 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-step-indicator": "^1.0.3",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "expo-updates": "~0.11.7"
+  },
+  "expo": {
+    "name": "HelpingHands",
+    "description": "CS492 HelpingHands App",
+    "version:": "1.0.0",
+    "icon": "./assets/logo.png"
+  },
+  "android": {
+    "package": "com.helpinghand.HelpingHands",
+    "versionCode": 1
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

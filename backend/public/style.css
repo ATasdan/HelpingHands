@@ -171,3 +171,7 @@ body {
   visibility: hidden;
   opacity: 0;
 }
+
+#finalIcon{
+  margin-bottom: 15px;
+}

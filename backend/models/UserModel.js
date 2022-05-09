@@ -59,6 +59,18 @@ UserSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  try {
+    if (this._update.password) {
+      const hashed = await bcrypt.hash(this._update.password, 10);
+      this._update.password = hashed;
+    }
+    next();
+  } catch (error) {
+    return next(err);
+  }
+});
+
 // Returns a JWT token with userID and name
 UserSchema.methods.createJWT = function () {
   return jwt.sign(
