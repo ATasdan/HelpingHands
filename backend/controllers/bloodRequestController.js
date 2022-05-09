@@ -202,12 +202,16 @@ const getYourRequests = async (req, res) => {
     .json({ data: { requests: requestData, pledges: pledgeData } });
 };
 
-const cancelRequest = async (req,res) => {
-  const Request = await BloodRequestModel.findByIdAndDelete(req.body.requestID)
-  const Pledges = await RequestPledgeModel.deleteMany({requestID:req.body.requestID})
+const cancelRequest = async (req, res) => {
+  const Pledges = await RequestPledgeModel.find({
+    requestID: req.body.requestID,
+  });
+  for (const Pledge in Pledges) {
+    await RequestPledgeModel.deleteOne({ _id: Pledge._id });
+  }
 
-  res.status(StatusCodes.OK)
-}
+  const Request = await BloodRequestModel.findByIdAndDelete(req.body.requestID);
+};
 
 module.exports = {
   createRequest,
@@ -216,5 +220,5 @@ module.exports = {
   getPledges,
   deletePledge,
   getYourRequests,
-  cancelRequest
+  cancelRequest,
 };
