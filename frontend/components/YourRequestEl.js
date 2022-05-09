@@ -3,14 +3,31 @@ import {
   Text,
   View,
   FlatList,
+  Button,
   TouchableOpacity,
 } from "react-native";
 import React from "react";
 import theme from "../styles/theme";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "../api/api";
 
-export default function YourRequestEl({ data, pledgees }) {
+export default function YourRequestEl({ data, pledgees, refresh }) {
   const navigation = useNavigation();
+
+  console.log(data);
+  const cancelRequest = async () => {
+    try {
+      const response = await api.delete("/bloodRequest/yourRequests", {
+        data: {
+          requestID: data.requestID,
+        },
+      });
+      //it is not refreshing
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -27,10 +44,13 @@ export default function YourRequestEl({ data, pledgees }) {
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   style={styles.touchBg}
-                  onPress={() => navigation.navigate("Chat", {
-                    targetID: item.donorData.donorID,
-                    targetName: item.donorData.name,
-                  })}
+                  onPress={() =>
+                    navigation.navigate("Chat", {
+                      targetID: item.donorData.donorID,
+                      targetName: item.donorData.name,
+                      targetType: "YourRequest",
+                    })
+                  }
                 >
                   <Text style={{ fontWeight: "bold" }}>
                     Pledgee {index + 1}
@@ -43,11 +63,21 @@ export default function YourRequestEl({ data, pledgees }) {
               keyExtractor={(item) => item.donorData.name}
               ItemSeparatorComponent={<View style={styles.separator}></View>}
             />
+            <Button
+              title="Cancel Request"
+              color="#FF0000"
+              onPress={cancelRequest}
+            />
           </View>
         ) : (
           <View>
             <Text></Text>
             <Text>No one has pledged to donate to this request yet</Text>
+            <Button
+              title="Cancel Request"
+              color="#FF0000"
+              onPress={cancelRequest}
+            />
           </View>
         )}
       </View>
