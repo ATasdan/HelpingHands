@@ -52,7 +52,7 @@ export default function NearbyRequests(props) {
   const getData = async () => {
     try {
       setLoading(true);
-      let requestData = await api.get("/bloodRequest/nearbyRequests");
+      let requestData = await api.post("/bloodRequest/nearbyRequests");
       const pledgeData = await api.get("/bloodRequest/pledge");
       setLoading(false);
       let i = 0;
