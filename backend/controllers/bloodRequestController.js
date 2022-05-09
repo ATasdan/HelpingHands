@@ -211,6 +211,7 @@ const cancelRequest = async (req, res) => {
   }
 
   const Request = await BloodRequestModel.findByIdAndDelete(req.body.requestID);
+  res.status(StatusCodes.OK);
 };
 
 module.exports = {
