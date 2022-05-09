@@ -5,17 +5,23 @@ import {
   ScrollView,
   FlatList,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 import ChatEl from "../components/ChatEl";
 import theme from "../styles/theme";
+import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Chat(props) {
   const [messages, setMessages] = useState({});
   const [id, setID] = useState("");
   const [text, setText] = useState("");
-  const { targetID, targetName } = props.route.params;
+  const { targetID, targetName, targetType, requestID } = props.route.params;
+
+  const navigation = useNavigation();
 
   const getMessages = async () => {
     try {
@@ -43,16 +49,28 @@ export default function Chat(props) {
   };
 
   const sendMessage = async (message) => {
-    this.textInput.clear()
-    console.log("here");
     try {
       const response = await api.post("/chat/sendMessage", {
         targetID: targetID,
         message: message,
       });
+      setText("");
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const removePledge = async () => {
+    try {
+      const response = await api.delete("/bloodRequest/pledge", {
+        data: {
+          requestID: requestID,
+          donorID: targetID,
+        },
+      });
+      alert("You have accepted the donation!");
+      navigation.pop();
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -73,6 +91,23 @@ export default function Chat(props) {
         }}
       >
         <Text>Chat with {targetName}</Text>
+        {targetType === "YourRequest" ? (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={removePledge}>
+              <AntDesign
+                name="checkcircle"
+                style={{ paddingRight: 10 }}
+                size={30}
+                color="blue"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={removePledge}>
+              <Entypo name="circle-with-cross" size={35} color="red" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View></View>
+        )}
       </View>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
@@ -99,7 +134,7 @@ export default function Chat(props) {
           />
         </View>
         <TextInput
-          ref={input => {this.textInput = input}}
+          value={text}
           style={styles.input}
           onChangeText={setText}
           placeholder="Send a message"
@@ -126,5 +161,12 @@ const styles = StyleSheet.create({
   container2: {
     flex: 1,
     paddingTop: 50,
+  },
+  buttonContainer: {
+    position: "absolute",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    right: 0,
   },
 });

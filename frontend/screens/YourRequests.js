@@ -21,6 +21,7 @@ export default function YourRequests() {
   const getData = async () => {
     try {
       setLoading(true);
+      console.log("here");
       const response = await api.get("/bloodRequest/yourRequests");
       const requestData = response.data.data.requests;
       const pledgeData = response.data.data.pledges;
@@ -44,6 +45,10 @@ export default function YourRequests() {
   };
   useEffect(async () => {
     getData();
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      getData();
+    });
+    return willFocusSubscription;
   }, []);
   return (
     <SafeAreaView style={styles.container}>

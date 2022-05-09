@@ -10,11 +10,11 @@ import React from "react";
 import theme from "../styles/theme";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "../api/api";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function YourRequestEl({ data, pledgees, refresh }) {
   const navigation = useNavigation();
 
-  console.log(data);
   const cancelRequest = async () => {
     try {
       const response = await api.delete("/bloodRequest/yourRequests", {
@@ -22,6 +22,7 @@ export default function YourRequestEl({ data, pledgees, refresh }) {
           requestID: data.requestID,
         },
       });
+      await refresh();
       //it is not refreshing
     } catch (e) {
       console.log(e);
@@ -35,6 +36,9 @@ export default function YourRequestEl({ data, pledgees, refresh }) {
         <Text>Hospital: {data.hospital}</Text>
         <Text>Creation Date: {data.creationDate.split("T")[0]}</Text>
         <Text>Expiration Date: {data.expirationDate}</Text>
+        <TouchableOpacity style={styles.buttonStyle} onPress={cancelRequest}>
+          <MaterialIcons name="cancel" size={36} color="red" />
+        </TouchableOpacity>
         {pledgees.length > 0 ? (
           <View>
             <Text></Text>
@@ -49,6 +53,7 @@ export default function YourRequestEl({ data, pledgees, refresh }) {
                       targetID: item.donorData.donorID,
                       targetName: item.donorData.name,
                       targetType: "YourRequest",
+                      requestID: data.requestID,
                     })
                   }
                 >
@@ -63,21 +68,11 @@ export default function YourRequestEl({ data, pledgees, refresh }) {
               keyExtractor={(item) => item.donorData.name}
               ItemSeparatorComponent={<View style={styles.separator}></View>}
             />
-            <Button
-              title="Cancel Request"
-              color="#FF0000"
-              onPress={cancelRequest}
-            />
           </View>
         ) : (
           <View>
             <Text></Text>
             <Text>No one has pledged to donate to this request yet</Text>
-            <Button
-              title="Cancel Request"
-              color="#FF0000"
-              onPress={cancelRequest}
-            />
           </View>
         )}
       </View>
@@ -106,5 +101,10 @@ const styles = StyleSheet.create({
   touchBg: {
     borderRadius: 20,
     paddingHorizontal: 10,
+  },
+  buttonStyle: {
+    position: "absolute",
+    right: 0,
+    marginTop: 40,
   },
 });
