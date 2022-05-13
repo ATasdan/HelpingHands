@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  LogBox,
 } from "react-native";
 
 import Theme from "../styles/theme";
@@ -47,6 +48,7 @@ const BJ = (props) => {
   useEffect(() => {
     getData();
     getDataRequest();
+    LogBox.ignoreAllLogs();
   }, []);
 
   const getData = async () => {
