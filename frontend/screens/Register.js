@@ -68,7 +68,7 @@ const Register = (props) => {
       phonenumber.length == 0
     ) {
       alert("Please insert all required fields!");
-    } else if (/[^a-zA-Z]/.test(username)) {
+    } else if (!/^[a-z ,.'-]+$/i.test(username)) {
       alert("Your name must only contain alphabets");
     } else if (!/^[0-9]*$/.test(phonenumber)) {
       alert("Phone number is not valid");
